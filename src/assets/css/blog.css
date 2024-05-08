@@ -1,0 +1,263 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+}
+
+html,body,div,header,el-header{
+  margin: 0;
+  padding: 0;
+}
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+.main-container {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #ffffff; /* 背景颜色 */
+  /*background: rgba(255, 255, 255, 0.2);*/
+  overflow: hidden auto;
+}
+.group {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0.5px 0 0 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.paragraph {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*width: 650px;
+  height: 158.39px;*/
+  margin: 50px auto 0; /* 上下边距，自动计算左右边距 */
+  font-size: 0px;
+  z-index: 4;
+  overflow: visible auto;
+}
+.blog-heading {/*页面标题 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 29.7px auto 0; /* 上下边距，自动计算左右边距 */
+  color: #ffffff;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 5;
+}
+.blog-subheading {/*次级标题 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 14.6px auto 0; /* 上下边距，自动计算左右边距 */
+  color: #ffffff;
+  font-family: Lato, var(--default-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 6;
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  margin: 92.81px 0 0 0;
+  background: url(@/assets/images/container.png)
+    no-repeat center;
+  background-size: cover;
+  z-index: 7;
+  overflow: hidden;
+}
+.image-background {/*blog后的图片，最上端*/
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: url(@/assets/images/background.png)
+    no-repeat center;
+  background-size: cover;
+  z-index: 2;
+}
+.overlay { /*blog后背景图降低曝光度，达到层叠效果*/
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.44);
+  z-index: 3;
+}
+.blog-create {/*blog create/post的格式*/
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: 200px;
+  height: 37px;
+  margin: 20px 0 0 12%;
+  color: #313131;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18.9px;
+  text-align: left;
+  text-transform: uppercase;
+  z-index: 929;
+}
+.black-background {/*blog create/post 下的横线*/
+  position: relative;
+  width: 76%;
+  height: 3.5px;
+  margin: 5px 0 0 12%;
+  background:#0e0e0e ;
+  /*background: #ff8a65;*/
+  z-index: 930;
+}
+
+.create-frame {/*blog create下的边框*/
+  position: relative;
+  width: 76%;
+  height: 80px;
+  margin: 10px auto 0;
+  z-index: 929;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+.create-frame:hover {
+  background-color: #f8f8f8;
+}
+.create {/*blog create下的边框中字*/
+  position: relative;
+  width: 100%;
+  height: 37px;
+  margin: 30px 0 0 0; /* 上下边距，自动计算左右边距 */
+  background-size: 100% 100%;
+  font-size: 16px;
+  z-index: 934;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px; /* 设置列之间的间隔 */
+  width: 76%; /* 设置容器总宽度为页面宽度的76% */
+  margin: 20px auto; /* 居中容器 */
+}
+
+.blog-item {
+  
+  background-color: #f8f8f8; /* 卡片背景颜色 */
+  padding: 20px;
+  border-radius: 8px; /* 卡片圆角 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 卡片阴影 */
+  width: 100%; /* 卡片宽度 */
+  height: 100%; /* 卡片高度 */
+  margin: auto; /* 卡片居中 */
+  position: relative; /* 相对定位 */
+  
+  /*display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff; /* 背景颜色 */
+}
+
+.router-link-custom {
+  /* 移除 <router-link> 默认样式 */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer; /* 保持鼠标样式为指针 */
+}
+
+.router-link-custom > div {
+  /* 确保整个内容区域都能触发点击事件 */
+  display: inline-block;
+}
+
+.blog-cover {
+  width: 100%;
+  height: auto; /* 确保图片宽度与容器相同，高度自动适应 */
+  object-fit: cover; /* 图片适应容器，保持宽高比 */
+}
+
+.blog-tag {
+  margin-top: 15px; /* 标题与图片之间的间距 */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px
+}
+
+.blog-title {
+  margin-top: 15px; /* 标题与图片之间的间距 */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px
+}
+
+.divider {/*标题和内容分界线*/
+  width: 80%;
+  height: 1.5px;
+  background-color: #000;
+  margin-bottom: 10px ;
+}
+
+.blog-description {
+  margin-top: 0px; /* 标题与内容之间的间距 */
+  font-size: 14px;
+  font-weight: normal;
+  padding: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 显示三行 */
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -moz-box-orient: vertical;
+  max-height: calc(1.2em * 3); /* 1.2em 为每行的高度，3 为最大行数 */
+}
+
+.black-button {
+  color:  #333;
+  background-color:#fff;
+  border-color: #fff;
+ 
+}
+.black-button:hover {
+  color: #fff;
+  background-color: #333;
+  border-color: #333;
+}
