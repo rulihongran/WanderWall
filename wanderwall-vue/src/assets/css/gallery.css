@@ -1,0 +1,237 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+}
+
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+
+.main-container {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #ffffff; /* 背景颜色 */
+  /*background: rgba(255, 255, 255, 0.2);*/
+  overflow: hidden auto;
+}
+.group {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  /*height: 100%;*/
+  height: 500px;
+  margin: 80px 0 0 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.paragraph {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*width: 650px;
+  height: 158.39px;*/
+  margin: 50px auto 0; /* 上下边距，自动计算左右边距 */
+  font-size: 0px;
+  z-index: 4;
+  overflow: visible auto;
+}
+.gallery-heading {/*页面标题 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 160px auto 0; /* 上下边距，自动计算左右边距 */
+  color: #ffffff;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 5;
+}
+.gallery-subheading {/*次级标题 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 14.6px auto 0; /* 上下边距，自动计算左右边距 */
+  color: #ffffff;
+  font-family: Lato, var(--default-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 6;
+}
+.paper-edge {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  margin: 92.81px 0 0 0;
+  background: url(@/assets/gallery/container.png)
+    no-repeat center;
+  background-size: cover;
+  z-index: 7;
+  overflow: hidden;
+}
+.image-background {/*blog后的图片，最上端*/
+  position: absolute;
+  width: 100%;
+  /*width: 1960px;*/
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: url(@/assets/gallery/background.png)
+    no-repeat center;
+  background-size: cover;
+  z-index: 2;
+}
+.gallery-overlay { /*背景图降低曝光度，达到层叠效果*/
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.44);
+  z-index: 3;
+}
+
+.button{
+  margin: 10px auto 0;
+}
+.black-button {
+  color:  #333;
+  background-color:#fff;
+  border-color: #fff;
+ 
+}
+.black-button:hover {
+  color: #fff;
+  background-color: #333;
+  border-color: #333;
+}
+
+.black-divider {/*blog create/post 下的横线*/
+  position: relative;
+  width: 76%;
+  height: 2px;
+  margin: 5px 0 0 12%;
+  background:#0e0e0e ;
+  /*background: #ff8a65;*/
+  z-index: 930;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px; /* 设置列之间的间隔 */
+  width: 76%; /* 设置容器总宽度为页面宽度的76% */
+  margin: 20px auto; /* 居中容器 */
+
+}
+
+.gallery-item {
+  background-color: #f8f8f8; /* 卡片背景颜色 */
+  padding: 20px;
+  border-radius: 8px; /* 卡片圆角 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 卡片阴影 */
+  width: 100%; /* 卡片宽度 */
+  height: 100%; /* 卡片高度 */
+  margin: auto; /* 卡片居中 */
+  position: relative; /* 相对定位 */
+  /*display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff; /* 背景颜色 */
+}
+.gallery-show {
+  width: 100%;
+  max-width: 221px;
+  height: 100%; /* 确保图片宽度与容器相同 */
+  max-height: 148px;
+  overflow: hidden ;
+  object-fit: contain; /* 图片适应容器，保持宽高比 */
+}
+
+.hover-image {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 221px;
+  height: 148px;
+  opacity: 0; /* 初始不显示 */
+  background: url( "@/assets/gallery/shadow.png")
+    no-repeat center;
+  background-size: cover;
+  background-color:  rgba(0, 0, 0, 0.44);;
+  filter: brightness(10%); /* 50% 的亮度 */
+  pointer-events: none;
+  border-radius: 7px; /* 卡片圆角 */
+}
+
+
+.gallery-item:hover .hover-image {
+  opacity: 1; /* 鼠标悬浮时显示 */
+}
+
+.gallery-imgdsc{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  top: 20px;
+  left: 20px;
+  padding: 20px;
+  width: 221px;
+  height: 148px;
+  opacity: 0; /* 初始不显示 */
+  pointer-events: none;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  text-align: center;
+  border-radius: 7px; /* 卡片圆角 */
+}
+.gallery-item:hover .gallery-imgdsc {
+  opacity: 1; /* 鼠标悬浮时显示 */
+}
+
+.input-imgdsc{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 10px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  text-align: center;
+  border-radius: 7px; /* 卡片圆角 */
+}
