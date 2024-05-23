@@ -19,6 +19,8 @@ core-js@3.36.1
 echarts@4.9.0 （Attention!!!）
 element-china-area-data@6.1.0
 element-plus@2.7.2
+hammerjs@2.0.8 (new)
+jquery@3.7.1 (new)
 vue-router@4.3.0
 vue@3.4.21
 vuex@4.1.0
