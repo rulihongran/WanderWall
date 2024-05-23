@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TraceMap from "../views/TraceMap";
 import Gallery from "../views/Gallery";
-
+import RelationGraph from "@/views/RelationGraph";
 const routes = [
   {
     path: '/',
@@ -39,6 +39,68 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path:'/relation-graph',
+    name:'relation-graph',
+    component: RelationGraph,
+  },
+  {
+    path: '/login',
+    name: 'LoginView',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/register',
+    name: 'RegisterView',
+    component: () => import('../views/RegisterView.vue')
+  },
+  {
+    path: '/findpass',
+    name: 'FindpassView',
+    component: () => import('../views/FindpassView.vue')
+  },
+
+  {
+    path: '/userinfo',
+    name: 'UserView',
+    component: () => import('@/views/UserInfoView/UserView.vue'),
+    children: [
+      {
+        path: '/work',
+        name: 'workView',
+        component: () => import('@/views/UserInfoView/workView.vue')
+      },
+      {
+        path: '/friend',
+        name: 'friendView',
+        component: () => import('@/views/UserInfoView/friendView.vue')
+      },
+      {
+        path: '/addfriend',
+        name: 'addfriView',
+        component: () => import('@/views/UserInfoView/addfriView.vue')
+      },
+    ]
+  },
+
+  {
+    path:'/edit',
+    name:'EditView',
+    component: () => import('../views/UserInfoView/EditView.vue'),
+    children: [
+      {
+        // path: '/personal/info/:id',
+        path: '/infoView',
+        name:'infoView',
+        component: () => import('@/views/UserInfoView/infoView.vue')
+      },
+    ]
+  },
+  {
+    path:'/testView',
+    name:'testView',
+    component: () => import( '../views/UserInfoView/testView.vue'),
   },
 ]
 

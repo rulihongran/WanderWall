@@ -1,0 +1,162 @@
+<template>
+  <div class="login-background">
+    <div class="flexcenter">
+      <div style="margin-right: 200px; z-index: 6;width: 30%"><img src="@/assets/wanderwall-logo.png" style="opacity: 0.7"></div>
+      <div class="login-container">
+        <div class="form-container">
+          <el-form :model="user" :rules="rules" ref="loginref" class="login-form">
+            <!-- 表单内容 -->
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <el-form :model="user" style="width: 80%" :rules="rules" ref="registerref">
+
+            <h2 style="margin: 20px">注册</h2>
+            <el-form-item prop="username">
+                <el-input  prefix-icon="el-icon-user" size="large" placeholder="请输入账号" v-model="user.username" clearable></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input  prefix-icon="el-icon-lock" size="large" show-password placeholder="请输入密码" v-model="user.password" clearable></el-input>
+            </el-form-item>
+            <el-form-item prop="confirmpass">
+              <el-input  prefix-icon="el-icon-lock" size="large" show-password placeholder="请确认密码" v-model="user.confirmpass" clearable></el-input>
+            </el-form-item>
+            <el-form :model="user" :rules="specialrule" ref="verifyref">
+              <el-form-item prop="email">
+              <el-input  prefix-icon="el-icon-message" size="large" placeholder="请输入邮箱" v-model="user.email"  clearable></el-input>
+              </el-form-item>
+            </el-form>
+            <div style="flex: 1; display: flex;"> 
+              <div style="flex: 1;"> 
+                <el-form-item prop="code">
+                  <el-input  prefix-icon="el-icon-chat-dot-round" size="large" placeholder="输入验证码" v-model="user.code" clearable></el-input>
+                </el-form-item>
+              </div>
+              <div style="flex: 1;text-align: right;"> 
+                <el-form-item>
+                  <el-button type="primary" style="width: 90%;background-color:#5f9592" @click="verify">获取验证码</el-button>
+                </el-form-item>
+              </div>
+            </div>
+            <el-form-item>
+              <el-button type="primary" style="width: 100%;background-color:#5f9592" @click="register">注册</el-button>
+            </el-form-item>
+            <div style="display:flex">
+              <div style="flex: 1;margin-bottom: 30px">已有账号?去<span style="color:lightseagreen; cursor: pointer; text-decoration: underline;" @click="$router.push('/login')">登录</span></div>
+            </div>
+          </el-form>
+        </div> 
+          </el-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "RegisterView",
+  data() {
+    //密码一致校验
+    const confirm = (rule, value, callback) =>{
+      if(value === '')
+      {
+        callback(new Error('请确认密码'))
+      }
+      else if(value !== this.user.password)
+      {
+        callback(new Error('两次密码不一致'))
+      }
+      else
+      {
+        callback()
+      }
+    }
+
+    return {
+        user:{
+          username: '' ,
+          password: '' ,
+          confirmpass: '',
+          email: '',
+          code: ''
+        },
+        rules: {
+          username: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+          ],
+          confirmpass: [
+            { validator: confirm, trigger: 'blur' },
+          ],
+          email: [
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+  { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          ],
+          code: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+          ]
+        },
+        specialrule: {
+          email: [
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+ { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          ]
+        }
+        }
+    },
+  created() {
+  }
+}
+   
+</script>
+
+<style scoped>
+.login-background {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('~@/assets/login/register.jpg'); /* 使用~@表示根目录，然后再添加文件路径 */
+  background-size: cover;
+}
+
+.flexcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%; /* 设置合适的宽度 */
+  background-color: rgba(0, 0, 0, 0); /* 设置背景色为透明 */
+}
+
+.login-container {
+  display: flex;
+  background-color: rgba(245, 245, 245, 1); /* 设置背景色为透明 */
+  width: 40%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+}
+
+.image-container img {
+  height: 100%;
+  width: 100%;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  width: 80%;
+}
+
+</style>

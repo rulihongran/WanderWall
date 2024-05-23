@@ -7,8 +7,8 @@
       <source src="../assets/homepage_scenery.mp4" type="video/mp4">
     </video>
     <div class="title-overlay">
-      <h1 class="homepage-title">Welcome to WanderWall</h1>
-      <h1 class="homepage-title-text">Logging your wanderings and sharing them with your friends.</h1>
+      <h1 class="homepage-title">&nbsp;&nbsp;&nbsp;Welcome to WanderWall</h1>
+      <h1 class="homepage-title-text">&nbsp;Logging your wanderings and sharing them with your friends.</h1>
       <div class="explore-button" @click="goTraceMap">
         <span>Explore Now </span>
       </div>
@@ -29,17 +29,24 @@
       </a>
     </div>
     <div class="image-box">
+      <a href="/relation-graph">
+        <img src="../assets/relation.png" alt="Image 2">
+        <h3>Travel Relation</h3>
+      </a>
+    </div>
+    <div class="image-box">
       <a href="/blog">
-      <img src="../assets/home_blog.png" alt="Image 2">
+      <img src="../assets/home_blog.png" alt="Image 3">
       <h3>Blog</h3>
       </a>
     </div>
     <div class="image-box">
       <a href="/gallery">
-      <img src="../assets/album.png" alt="Image 3">
+      <img src="../assets/album.png" alt="Image 4">
       <h3>Gallery</h3>
       </a>
     </div>
+
   </div>
   <Footer/>
 
