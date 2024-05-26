@@ -34,7 +34,7 @@ button {
 .blog-detail-container {
   position: relative;
   width: 80%;
-  height: 50%;
+  height: auto;
   margin: 50px 0 0 10%;
   z-index: 1;
   overflow: hidden;
@@ -101,8 +101,8 @@ button {
 }
 .cover {
   position: absolute;
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 100%;
   top: 0;
   right: 0;
   left: 0;
@@ -208,7 +208,7 @@ button {
 
 .aside-description {/*文本*/
   position: relative;
-  height: 100%;
+  height: auto;
   width: 76%;
   margin-top: 1%;
   margin-left: 12%;
@@ -224,6 +224,20 @@ button {
   line-height: 36px;
   text-align: left;
 }
+.text-title {
+  display: block;
+  position: relative;
+  height: 33.8px;
+  margin: 5px 0 0 0;
+  color: #313131;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 33.8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
 .picture {
   position: relative;
   display: flex;
@@ -232,6 +246,7 @@ button {
   width: auto;
   height: auto;
   margin: 0 auto;
+  margin-bottom:5px;
   max-width: 600px;
   max-height: 600px;
   border-radius: 10px;
@@ -254,20 +269,7 @@ button {
   white-space: nowrap;
   z-index: 62;
 }
-.text-title {
-  display: block;
-  position: relative;
-  height: 33.8px;
-  margin: 5px 0 0 0;
-  color: #313131;
-  font-family: Open Sans, var(--default-font-family);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 33.8px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 29;
-}
+
 
 .input-title {
   display: flex;

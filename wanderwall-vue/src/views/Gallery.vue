@@ -57,8 +57,6 @@
         <template v-if="images[index].isediting">
           <div>
             <el-image :src="getCover(image.src)" :alt="显示失败" class="gallery-show" @click="imgchange(index)"></el-image>
-            <div class="hover-image"></div>
-             <span class="gallery-imgdsc"></span>
             <el-input class="input-imgdsc" placeholder="请输入图片描述" v-model="image.dsc"></el-input>
             <el-button class="black-button" @click="Delete(index)"><el-icon>
                 <Delete />
