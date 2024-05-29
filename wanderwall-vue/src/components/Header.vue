@@ -4,7 +4,7 @@
       <div id="navigation-sticky-wrapper" class="sticky-wrapper" style="height: 82px;">
         <nav id="navigation" class="navigator" role="navigation" style="background: black; padding-top: 15px;height: 82px;border-color: black">
           <div class="header-container" >
-            <div id="logo" style="padding-left: 7%">
+            <div id="logo" style="padding-left: 5%">
               <a href="/">
                 <img class="penci-mainlogo penci-limg penci-logo" src="../assets/wanderwall-logo.png" alt="The World Travel Guy" width="230" height="100"> </a>
             </div>
@@ -15,6 +15,7 @@
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/relation-graph/') }" ><a href="/relation-graph/" style="font-size: 14px" >Travel Relation</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/blog/') }"><a href="/blog/" style="font-size: 14px">Blog</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/gallery/') }"><a href="/gallery/"style="font-size: 14px">Gallery</a></li>
+              <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/report') }"><a href="/report"style="font-size: 14px">Report</a></li>
             </ul>
             <!--未登录-->
             <div v-if = "!isLoggedIn" class="nav-v2-dynamic__logged-out">

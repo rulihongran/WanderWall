@@ -434,7 +434,7 @@
 }
 
 .home-image-container .image-box {
-    flex-basis: calc(25% - 5px); /* 每个图片盒子的宽度，可以根据需要调整 */
+    flex-basis: calc(20% - 5px); /* 每个图片盒子的宽度，可以根据需要调整 */
     margin-bottom: 20px; /* 图片盒子之间的间距 */
     border-radius: 20px;
 }

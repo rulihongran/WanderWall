@@ -4,7 +4,7 @@
 
   <div id="video-container" >
     <video autoplay muted loop >
-      <source src="../assets/homepage_scenery.mp4" type="video/mp4">
+      <source src="../assets/homepage/homepage_scenery.mp4" type="video/mp4">
     </video>
     <div class="title-overlay">
       <h1 class="homepage-title">&nbsp;&nbsp;&nbsp;Welcome to WanderWall</h1>
@@ -24,26 +24,32 @@
   <div class="home-image-container">
     <div class="image-box">
       <a href="/tracemap">
-      <img src="../assets/china_map_bw.png" alt="Image 1">
+      <img src="../assets/homepage/china_map_bw.png" alt="Image 1">
         <h3>Track Map</h3>
       </a>
     </div>
     <div class="image-box">
       <a href="/relation-graph">
-        <img src="../assets/relation.png" alt="Image 2">
+        <img src="../assets/homepage/relation.png" alt="Image 2">
         <h3>Travel Relation</h3>
       </a>
     </div>
     <div class="image-box">
       <a href="/blog">
-      <img src="../assets/home_blog.png" alt="Image 3">
+      <img src="../assets/homepage/home_blog.png" alt="Image 3">
       <h3>Blog</h3>
       </a>
     </div>
     <div class="image-box">
       <a href="/gallery">
-      <img src="../assets/album.png" alt="Image 4">
+      <img src="../assets/homepage/album.png" alt="Image 4">
       <h3>Gallery</h3>
+      </a>
+    </div>
+    <div class="image-box">
+      <a href="/report">
+        <img src="../assets/homepage/report.jpg" alt="Image 4">
+        <h3>Annual Report</h3>
       </a>
     </div>
 

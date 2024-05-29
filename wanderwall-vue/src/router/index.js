@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import TraceMap from "../views/TraceMap";
 import Gallery from "../views/Gallery";
 import RelationGraph from "@/views/RelationGraph";
+import AnnualReport from "@/views/AnnualReport";
 const routes = [
   {
     path: '/',
@@ -44,6 +45,11 @@ const routes = [
     path:'/relation-graph',
     name:'relation-graph',
     component: RelationGraph,
+  },
+  {
+    path: '/report',
+    name: 'report',
+    component: AnnualReport
   },
   {
     path: '/login',
