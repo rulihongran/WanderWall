@@ -4,12 +4,12 @@
       <div id="navigation-sticky-wrapper" class="sticky-wrapper" style="height: 82px;">
         <nav id="navigation" class="navigator" role="navigation" style="background: black; padding-top: 15px;height: 82px;border-color: black">
           <div class="header-container" >
-            <div id="logo" style="padding-left: 5%">
+            <div id="logo" style="padding-left: 7%">
               <a href="/">
                 <img class="penci-mainlogo penci-limg penci-logo" src="../assets/wanderwall-logo.png" alt="The World Travel Guy" width="230" height="100"> </a>
             </div>
             <!--菜单-->
-            <ul id="menu-menu-1" class="menu" style="padding-left: 15%;padding-right: 15%">
+            <ul id="menu-menu-1" class="menu" style="padding-left: 10%;padding-right: 8%">
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/') }"><a href="/" style="font-size: 14px">Home</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/tracemap/') }" ><a href="/tracemap/" style="font-size: 14px" >Trace Map</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/relation-graph/') }" ><a href="/relation-graph/" style="font-size: 14px" >Travel Relation</a></li>
