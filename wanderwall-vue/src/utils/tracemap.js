@@ -300,22 +300,22 @@ export function showProvince(pName, pChinese,dialogVisible){
 // 获取旅行数据
 function getTravelData(place)
 {
-    let dataList = [{ name: "黄山市", value: 1, PostCount: "10.92" },
-        { name: "宣城市", value: 10, PostCount: "10.51" },
-        { name: "滁州市", value: 1, PostCount: "9.50" },
-        { name: "六安市", value: 8, PostCount: "8.96" },
-        { name: "池州市", value: 1, PostCount: "7.69" },
-        { name: "合肥市", value: 7, PostCount: "7.52" },
-        { name: "阜阳市", value: 0, PostCount: "6.52" },
-        { name: "芜湖市", value: 0, PostCount: "5.91" },
-        { name: "马鞍山市", value: 0, PostCount: "5.85" },
-        { name: "安庆市", value: 4, PostCount: "5.66" },
-        { name: "蚌埠市", value: 1, PostCount: "5.23" },
-        { name: "亳州市", value: 1, PostCount: "4.60" },
-        { name: "铜陵市", value: 5, PostCount: "3.51" },
-        { name: "淮南市", value: 0, PostCount: "2.96" },
-        { name: "淮北市", value: 1, PostCount: "2.85" },
-        { name: "宿州市", value: 1, PostCount: "1.78" }]
+    let dataList = [{ name: "黄山市", value: 1, PostCount: "10" },
+        { name: "宣城市", value: 10, PostCount: "10" },
+        { name: "滁州市", value: 1, PostCount: "9" },
+        { name: "六安市", value: 8, PostCount: "8" },
+        { name: "池州市", value: 1, PostCount: "7" },
+        { name: "合肥市", value: 7, PostCount: "7" },
+        { name: "阜阳市", value: 0, PostCount: "6" },
+        { name: "芜湖市", value: 0, PostCount: "5" },
+        { name: "马鞍山市", value: 0, PostCount: "5" },
+        { name: "安庆市", value: 4, PostCount: "5" },
+        { name: "蚌埠市", value: 1, PostCount: "5" },
+        { name: "亳州市", value: 1, PostCount: "4" },
+        { name: "铜陵市", value: 5, PostCount: "3" },
+        { name: "淮南市", value: 0, PostCount: "2" },
+        { name: "淮北市", value: 1, PostCount: "2" },
+        { name: "宿州市", value: 1, PostCount: "1" }]
 
     return dataList;
 }
