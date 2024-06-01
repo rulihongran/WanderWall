@@ -1,9 +1,12 @@
 import echarts from "echarts";
 import geoJson from "echarts/map/json/china";
+import axios from "axios";
+import store from "@/store/index";
 
 let myChart;
 
-export function drawChinaMap(dialogVisible) {
+// 画中国地图
+export function drawChinaMap(dialogVisible,mark_options) {
     if (myChart){
         myChart.dispose();
     }
@@ -11,6 +14,47 @@ export function drawChinaMap(dialogVisible) {
     myChart = echarts.init(document.getElementById("trace-map"));
     echarts.registerMap("china", geoJson);
 
+    // 每个省份去过的次数（该省份下各个城市去过次数的总和）
+    let provinceFreqData = [
+        {name: '黑龙江', value: 12},
+        {name: '北京', value: 10},
+        {name: '上海', value: 10},
+        {name: '重庆', value: 5},
+    ];
+
+    // 去过的地点数据，用于高亮
+    let scatterData =  [
+        { value: [116.407, 39.904], name: '北京' },//经纬度坐标 城市
+        { value: [121.473, 31.230], name: '上海' },
+        { value: [106.264, 29.56], name: '重庆' },
+    ];
+
+    // 去过的路线数据，按时间排序
+    let routeData = [
+        {
+            coords: [[116.407, 39.904], [121.473, 31.230]],//起点经纬度坐标 终点经纬度坐标
+        },
+        {
+            coords: [ [121.473, 31.230], [106.264, 29.56]],
+        },
+    ];
+
+   let userId = store.state.user_id;
+
+    // 发送POST请求，获取旅行记录数据
+    axios.post('/api/travel-map-data', { userId })
+        .then(response => {
+            //const { provinceFreqData, scatterData, routeData } = response.data;//TODO:后端写好后把这行注释掉
+        })
+        .catch(error => {
+            console.error('数据请求失败:', error);
+        });
+    if (!mark_options.locPoint){
+        scatterData = [];
+    }
+    if(!mark_options.routeArrow){
+        routeData = [];
+    }
     myChart.setOption({
         // 背景
         backgroundColor: "#47807e",
@@ -21,7 +65,7 @@ export function drawChinaMap(dialogVisible) {
             aspectScale: 0.75,
             // 图层
             zoom: 1.1,
-            roam:false,
+            roam: false,
             // 样式
             itemStyle: {
                 // 标准
@@ -62,19 +106,31 @@ export function drawChinaMap(dialogVisible) {
                 },
             ],
         },
+        visualMap: {
+            min: 0,
+            max: 30,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'],
+            inRange: {
+                color: ['#eff1f0', '#9f9f9f']
+            },
+            calculable: true,
+            seriesIndex: [0]
+        },
         series: [
             // 1. 配置基础地图相关的数据参数
             {
                 type: "map",
                 label: {
                     normal: {
-                        show: false,
+                        show: mark_options.provinceName,
                         textStyle: {
-                            color: "#1DE9B6",
+                            color: "#617a74",
                         },
                     },
                     emphasis: {
-                        show:true,
+                        show: true,
                         textStyle: {
                             color: "#48766c",
                         },
@@ -83,11 +139,11 @@ export function drawChinaMap(dialogVisible) {
                 // 最外层
                 zoom: 1.1,
                 map: "china",
-                roam:false,
+                roam: false,
                 itemStyle: {
                     normal: {
                         // areaColor:"rgb(235, 233, 221)"
-                        areaColor:"#eff1f0"
+                        areaColor: "#eff1f0"
                     },
                     // 高亮效果
                     emphasis: {
@@ -95,16 +151,7 @@ export function drawChinaMap(dialogVisible) {
                         borderWidth: 0.1,
                     },
                 },
-                data: [
-                    {
-                        name: '黑龙江',
-                        itemStyle: {
-                            normal: {
-                                areaColor: "#d2d2d2"
-                            }
-                        }
-                    }
-                ]
+                data: provinceFreqData,
             },
             //   // 2. 配置散点图的各项参数
             {
@@ -119,12 +166,7 @@ export function drawChinaMap(dialogVisible) {
                 // 图层
                 zlevel: 1,
                 // 数据
-                data: [
-                    { value: [116.407, 39.904], name: '北京' },
-                    { value: [121.473, 31.230], name: '上海' },
-                    { value: [106.264, 29.56], name: '重庆' },
-                    // 其他散点数据
-                ],
+                data:scatterData,
                 // 涟漪特效相关配置
                 rippleEffect: {
                     // 动画周期
@@ -135,7 +177,9 @@ export function drawChinaMap(dialogVisible) {
                     brushType: "fill",
                 },
                 itemStyle: {
-                    color: '#c59ec3'  // 这里设置为红色
+                    normal: {
+                        color: '#c59ec3',  // 这里设置为红色
+                    }
                 },
             },
             //   // 3. 配置线性图的各项参数
@@ -165,14 +209,7 @@ export function drawChinaMap(dialogVisible) {
                         curveness: -0.6,
                     },
                 },
-                data: [
-                    {
-                        coords: [[116.407, 39.904], [121.473, 31.230]],
-                    },
-                    {
-                        coords: [ [121.473, 31.230], [106.264, 29.56]],
-                    },
-                ],
+                data: routeData,
             },
         ],
     });
@@ -201,6 +238,8 @@ export function drawChinaMap(dialogVisible) {
         });
     });
 
+    myChart.resize();
+
     // 点击跳转
     myChart.on('click', function (params) {
         let provinces = ['shanghai', 'hebei','shanxi','neimenggu','liaoning','jilin','heilongjiang','jiangsu','zhejiang','anhui','fujian','jiangxi','shandong','henan','hubei','hunan','guangdong','guangxi','hainan','sichuan','guizhou','yunnan','xizang','shanxi1','gansu','qinghai','ningxia','xinjiang', 'beijing', 'tianjin', 'chongqing', 'xianggang', 'aomen', 'taiwan'];
@@ -208,23 +247,26 @@ export function drawChinaMap(dialogVisible) {
         for(let  i= 0 ; i < provincesText.length ; i++ ){
             if(params.name === provincesText[i]){
                 myChart.dispose();
-                showProvince(provinces[i],provincesText[i],dialogVisible)
+                showProvince(provinces[i],provincesText[i],dialogVisible);
                 break ;
             }
         }
     });
 }
 
+// 画省份地图
 export function showProvince(pName, pChinese,dialogVisible){
     toggleBackIcon(true);
     // 动态加载地图的json文件
     let mapID=pName+'JS';
+    // 这里是请求地图json数据，与我们的后端无关
     fetch('/province/'+pName+'.json')
         .then(response => response.json())
         .then(geoJson => {
             // 注册地图
             myChart = echarts.init(document.getElementById("trace-map"));
             echarts.registerMap(mapID, geoJson);
+            // 请求后端旅行数据
             let dataList = getTravelData(pName);
             let option = {
                 tooltip: {
@@ -300,14 +342,15 @@ export function showProvince(pName, pChinese,dialogVisible){
 // 获取旅行数据
 function getTravelData(place)
 {
+    //某个省份各个城市的名称，去过的次数，发帖的次数
     let dataList = [{ name: "黄山市", value: 1, PostCount: "10" },
         { name: "宣城市", value: 10, PostCount: "10" },
         { name: "滁州市", value: 1, PostCount: "9" },
         { name: "六安市", value: 8, PostCount: "8" },
         { name: "池州市", value: 1, PostCount: "7" },
         { name: "合肥市", value: 7, PostCount: "7" },
-        { name: "阜阳市", value: 0, PostCount: "6" },
-        { name: "芜湖市", value: 0, PostCount: "5" },
+        { name: "阜阳市", value: 0, PostCount: "0" },
+        { name: "芜湖市", value: 0, PostCount: "0" },
         { name: "马鞍山市", value: 0, PostCount: "5" },
         { name: "安庆市", value: 4, PostCount: "5" },
         { name: "蚌埠市", value: 1, PostCount: "5" },
@@ -317,9 +360,21 @@ function getTravelData(place)
         { name: "淮北市", value: 1, PostCount: "2" },
         { name: "宿州市", value: 1, PostCount: "1" }]
 
+    let userId = store.state.user_id;
+
+    // 发送POST请求，获取旅行记录数据
+    axios.post('/api/travel-map-data', { user_id:userId ,province:place})
+        .then(response => {
+            //dataList = response.data; //TODO:后端写好后把这行注释掉
+        })
+        .catch(error => {
+            console.error('数据请求失败:', error);
+        });
+
     return dataList;
 }
 
+// 显示/隐藏左上方从省份返回国家地图的按钮
 function toggleBackIcon(show){
     const svgElement = document.getElementById('back-to-china-icon');
     if (show) {

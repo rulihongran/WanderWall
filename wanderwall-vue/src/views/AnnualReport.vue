@@ -119,6 +119,7 @@ import "swiper/swiper.min.css";
 // import "swiper/modules/pagination/pagination.min.css";
 
 export default {
+  name:"AnnualReport",
   components: {
     Swiper,
     SwiperSlide,
