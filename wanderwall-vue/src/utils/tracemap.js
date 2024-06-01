@@ -6,7 +6,7 @@ import store from "@/store/index";
 let myChart;
 
 // 画中国地图
-export function drawChinaMap(dialogVisible,mark_options) {
+export function drawChinaMap(dialogVisible,mark_options,enterProvince) {
     if (myChart){
         myChart.dispose();
     }
@@ -247,18 +247,55 @@ export function drawChinaMap(dialogVisible,mark_options) {
         for(let  i= 0 ; i < provincesText.length ; i++ ){
             if(params.name === provincesText[i]){
                 myChart.dispose();
-                showProvince(provinces[i],provincesText[i],dialogVisible);
+                enterProvince.value=true;
+                showProvince(provinces[i],provincesText[i],dialogVisible,mark_options);
                 break ;
             }
         }
     });
 }
 
+export function updateProvinceMap(mark_options)
+{
+    let updatedOption = {
+        geo: {
+            map:mapID,
+            roam: false,//不开启缩放和平移
+            zoom: 1.1,//视角缩放比例
+            label: {
+                normal: {
+                    show: mark_options.provinceName,
+                    fontSize: '12',
+                    color: "#395b53",
+                },
+                emphasis: {
+                    color: "#59837c",
+                }
+            },
+            itemStyle: {
+                normal: {
+                    borderColor: 'rgba(0, 0, 0, 0.2)'
+                },
+                emphasis: {
+                    areaColor: "#d2d2d2",//鼠标选择区域颜色
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    shadowBlur: 10,
+                    borderWidth: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.4)'
+                }
+            }
+        },
+    };
+    myChart.setOption(updatedOption);
+}
+
 // 画省份地图
-export function showProvince(pName, pChinese,dialogVisible){
+let mapID="";
+export function showProvince(pName, pChinese,dialogVisible,mark_options){
     toggleBackIcon(true);
     // 动态加载地图的json文件
-    let mapID=pName+'JS';
+    mapID=pName+'JS';
     // 这里是请求地图json数据，与我们的后端无关
     fetch('/province/'+pName+'.json')
         .then(response => response.json())
@@ -302,9 +339,12 @@ export function showProvince(pName, pChinese,dialogVisible){
                     zoom: 1.1,//视角缩放比例
                     label: {
                         normal: {
-                            show: true,
+                            show: mark_options.provinceName,
                             fontSize: '12',
                             color: "#395b53",
+                        },
+                        emphasis: {
+                            color: "#59837c",
                         }
                     },
                     itemStyle: {

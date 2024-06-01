@@ -4,7 +4,7 @@
   <div class="map-view">
     <div class="map-module-container" >
       <!--返回图标-->
-      <svg v-show="enterProvince" @click="backLink"  xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-box-arrow-left"  viewBox="0 0 16 16" id="back-to-china-icon">
+      <svg  @click="backLink"  xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-box-arrow-left"  viewBox="0 0 16 16" id="back-to-china-icon">
         <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
         <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
       </svg>
@@ -106,13 +106,18 @@ import Header from "@/components/Header.vue";
 import "@/assets/css/tracemap.css";
 import { ref } from 'vue';
 import {drawGauge} from "@/utils/polargauge";
-import {drawChinaMap} from "@/utils/tracemap";
+import {drawChinaMap,updateProvinceMap} from "@/utils/tracemap";
 
 export default {
   components: {Header},
   data() {
     return {
+      //next step提示框是否显示
       dialogVisible: {value:false},//对象 实现类似引用效果 showProvince里修改值
+
+      //省份地图
+      enterProvince:{value:false},//对象 实现类似引用效果 可在别的js文件修改该值
+
       isTimeSelectActive: false,
       timeSelected: 0, // 默认选中第一个选项
       timeOptions: [
@@ -120,12 +125,13 @@ export default {
         { label: 'This Past Year'},
         { label: 'All Time'}
       ],
-      mark_options:{locPoint:true,routeArrow:true,provinceName:false}//点 箭头 仪表盘
+
+      mark_options:{locPoint:true,routeArrow:true,provinceName:false}//点 箭头 仪表盘是否显示
     };
   },
   mounted() {
     // Axios请求都在各个函数里面
-    drawChinaMap(this.dialogVisible,this.mark_options);
+    drawChinaMap(this.dialogVisible,this.mark_options,this.enterProvince);
     drawGauge();
 
 
@@ -157,8 +163,12 @@ export default {
       // 点,箭头,仪表盘是否显示，不传给后端，直接在前端处理
       self.mark_options.locPoint = formObject['mark1'];
       self.mark_options.routeArrow = formObject['mark2'];
-      self.mark_options.provinceName = formObject['mark3'];
-      drawChinaMap(self.dialogVisible,self.mark_options);
+      self.mark_options.provinceName = formObject['mark3']
+      if (!self.enterProvince.value){
+        drawChinaMap(self.dialogVisible,self.mark_options);
+      }else{
+        updateProvinceMap(self.mark_options);
+      }
 
       // 发送请求到后端
       // axios.get(this.action, {
@@ -181,6 +191,7 @@ export default {
       this.timeSelected = index;
     },
     backLink(){
+      this.enterProvince.value = false;
       drawChinaMap(this.dialogVisible,this.mark_options);
     },
 
