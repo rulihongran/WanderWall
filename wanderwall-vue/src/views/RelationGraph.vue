@@ -17,6 +17,7 @@ export default {
   name: "RelationGraph",
   components: {Header},
   mounted() {
+    // 数据请求在这个函数里
     drawRelationGraph();
   }
 }

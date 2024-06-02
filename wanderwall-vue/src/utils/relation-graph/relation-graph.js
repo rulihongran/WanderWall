@@ -2,8 +2,10 @@ import "./d3.v3.min.js"
 import "./jquery-3.4.1.min.js"
 import "./materialize.min.js"
 import {initKG} from "./graph-render.js"
+import axios from "axios"
+import store from "./../../store/index"
 
-export function drawRelationGraph()
+export async function drawRelationGraph()
 {
     let graphNodesArray = {
         "1": {"name": "欲盖弥彰", "type": "User"},
@@ -36,7 +38,18 @@ export function drawRelationGraph()
         {"source": 11, "target": 6, "rela": "去过"}
     ];
 
+    const userID = store.state.user_id;
     let data = {};
+    // try {
+    //     const response = await axios.get("http://127.0.0.1:4523/m1/4475987-4122489-default/api/get-relation-graph");
+    //     const graphData = response.data.data;
+    //     data.nodes = graphData.nodes;
+    //     data.links = graphData.links;
+    //     console.log("Graph data loaded successfully:", data.nodes);
+    //     console.log("link:",data.links);
+    // } catch (error) {
+    //     console.error("Error fetching the relation graph:", error);
+    // }
     data.nodes = graphNodesArray;
     data.links = graphLinksArray;
     let config = {
