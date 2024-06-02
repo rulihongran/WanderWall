@@ -4,12 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test": "jest --coverage test --reporters=default --transformIgnorePatterns \\\"node_modules/(?!your-module-name)/\\"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "axios": "^1.7.2",
     "core-js": "^3.8.3",
     "echarts": "^4.9.0",
     "element-china-area-data": "^6.1.0",
@@ -24,16 +22,8 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-plugin-unit-jest": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "@vue/test-utils": "^2.0.0-0",
-    "@vue/vue3-jest": "^27.0.0-alpha.1",
-    "babel-jest": "^27.0.6",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.0.5",
-    "jest-junit": "^16.0.0",
-    "jest-transform-stub": "^2.0.0"
+    "@vue/cli-service": "~5.0.0"
   },
   "browserslist": [
     "> 1%",

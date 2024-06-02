@@ -103,11 +103,6 @@ const routes = [
       },
     ]
   },
-  {
-    path:'/testView',
-    name:'testView',
-    component: () => import( '../views/UserInfoView/testView.vue'),
-  },
 ]
 
 const router = createRouter({

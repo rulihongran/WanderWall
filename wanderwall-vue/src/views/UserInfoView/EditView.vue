@@ -11,7 +11,7 @@
             <div class="person_body_left">
         <el-card class="box-card" :body-style="{ padding: '0px' }">
 
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span class="person_body_list" style="border-bottom: none"
               >个人中心</span
             >
@@ -26,35 +26,14 @@
               :route="{ name: 'infoView', params: $route.params.id }"
             >
               <i class="el-icon-user"></i>
-              <span slot="title">个人简介</span>
+              <span >个人简介</span>
             </el-menu-item>
             <el-menu-item
               index="myarticle"
               :route="{ name: 'myarticle', params: $route.params.id }"
             >
               <i class="el-icon-edit-outline"></i>
-              <span slot="title">发帖</span>
-            </el-menu-item>
-            <el-menu-item
-              index="mycollect"
-              :route="{ name: 'mycollect', params: $route.params.id }"
-            >
-              <i class="el-icon-document"></i>
-              <span slot="title">收藏</span>
-            </el-menu-item>
-            <el-menu-item
-              index="myfan"
-              :route="{ name: 'myfan', params: $route.params.id }"
-            >
-              <i class="el-icon-tableware"></i>
-              <span slot="title">粉丝</span>
-            </el-menu-item>
-            <el-menu-item
-              index="myfollow"
-              :route="{ name: 'myfollow', params: $route.params.id }"
-            >
-              <i class="el-icon-circle-plus-outline"></i>
-              <span slot="title">关注</span>
+              <span >发帖</span>
             </el-menu-item>
           </el-menu>
         </el-card>

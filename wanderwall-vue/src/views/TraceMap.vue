@@ -2,9 +2,13 @@
   <Header/>
 
   <div class="map-view">
+<!--    <div class="mode-container">-->
+<!--      <div class="mode-button">Frequency</div>-->
+<!--      <div class="mode-button">Hand Draw</div>-->
+<!--    </div>-->
     <div class="map-module-container" >
       <!--返回图标-->
-      <svg  @click="backLink"  xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-box-arrow-left"  viewBox="0 0 16 16" id="back-to-china-icon">
+      <svg v-show="enterProvince" @click="backLink"  xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-box-arrow-left"  viewBox="0 0 16 16" id="back-to-china-icon">
         <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
         <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
       </svg>
@@ -22,7 +26,7 @@
       </el-dialog>
 
       <!--仪表盘-->
-      <div  class="gauge-container">
+      <div class="gauge-container">
         <div id="city-gauge"></div>
         <div id="people-gauge"></div>
       </div>
@@ -30,21 +34,21 @@
       <!--筛选表格-->
       <div class="search-filters-container">
         <div class="search-filters job-board-filters-form js-filters" style="background-color: rgba(255,255,255,0.2)">
-          <form class="job-filters js-job-search-form" id="options" action="/filter-map-data" accept-charset="UTF-8" method="get">
+          <form class="job-filters js-job-search-form" id="options" action="/jobs" accept-charset="UTF-8" method="get">
             <!--标签筛选-->
             <label class="map-filter-header" for="skills">Mark</label>
             <div class="checkbox-radio-group">
-              <label class="checkbox-radio-label" for="mark1">
-                <input class="js-specialty-checkbox" type="checkbox" value="1" name="mark1" id="specialty_ids_3" checked>
+              <label class="checkbox-radio-label" for="specialty_ids_3">
+                <input class="js-specialty-checkbox" type="checkbox" value="3" name="specialty_ids[]" id="specialty_ids_3">
                 Location Point
               </label>
-              <label class="checkbox-radio-label" for="mark2">
-                <input class="js-specialty-checkbox" type="checkbox" value="1" name="mark2" id="specialty_ids_4" checked>
+              <label class="checkbox-radio-label" for="specialty_ids_4">
+                <input class="js-specialty-checkbox" type="checkbox" value="4" name="specialty_ids[]" id="specialty_ids_4">
                 Route Arrow
               </label>
-              <label class="checkbox-radio-label" for="mark3">
-                <input class="js-specialty-checkbox" type="checkbox" value="1" name="mark3" id="specialty_ids_5">
-                Place Name
+              <label class="checkbox-radio-label" for="specialty_ids_5">
+                <input class="js-specialty-checkbox" type="checkbox" value="5" name="specialty_ids[]" id="specialty_ids_5">
+                Travel Summary
               </label>
             </div>
 
@@ -80,19 +84,19 @@
             </fieldset>
 
             <div class="divider"></div>
-<!--            Location指区域 比如长三角 待斟酌-->
+
             <label class="map-filter-header" for="location">Location</label>
             <input type="text" name="location" id="location" placeholder="Enter Location…" class="js-location input-with-outline-only" style="margin-bottom: 15px">
             <div class="checkbox-radio-group">
               <label class="checkbox-radio-label" for="specialty_ids_3">
-                <input type="checkbox" name="fav-place" id="anywhere" value="true">
-                <span>Only show favorite place</span>
+                <input type="checkbox" name="anywhere" id="anywhere" value="true">
+                <span>Ignore unexplored places</span>
               </label>
             </div>
 
             <div class="submit submit-container">
-              <button class="filter-button" type="submit" >Filter</button>
-              <button class="filter-clear-button"  type="reset">Clear</button>
+              <button class="filter-button" >Filter</button>
+              <button class="filter-clear-button" >Clear</button>
             </div>
           </form></div>
       </div>
@@ -106,82 +110,25 @@ import Header from "@/components/Header.vue";
 import "@/assets/css/tracemap.css";
 import { ref } from 'vue';
 import {drawGauge} from "@/utils/polargauge";
-import {drawChinaMap,updateProvinceMap} from "@/utils/tracemap";
+import {showProvince,drawChinaMap} from "@/utils/tracemap";
 
 export default {
   components: {Header},
   data() {
     return {
-      //next step提示框是否显示
       dialogVisible: {value:false},//对象 实现类似引用效果 showProvince里修改值
-
-      //省份地图
-      enterProvince:{value:false},//对象 实现类似引用效果 可在别的js文件修改该值
-
       isTimeSelectActive: false,
       timeSelected: 0, // 默认选中第一个选项
       timeOptions: [
-        { label: 'The Past Month'},
-        { label: 'This Past Year'},
-        { label: 'All Time'}
+        { label: 'The Past Month', link: '?timeframe=month' },
+        { label: 'This Past Year', link: '?timeframe=year' },
+        { label: 'All Time', link: '?timeframe=ever' }
       ],
-
-      mark_options:{locPoint:true,routeArrow:true,provinceName:false}//点 箭头 仪表盘是否显示
     };
   },
   mounted() {
-    // Axios请求都在各个函数里面
-    drawChinaMap(this.dialogVisible,this.mark_options,this.enterProvince);
+    drawChinaMap(this.dialogVisible);
     drawGauge();
-
-
-    //检测筛选表格提交行为，手动提交给后端
-    const self = this;
-    document.getElementById('options').addEventListener('submit', function(event) {
-      event.preventDefault(); // 阻止默认提交行为
-
-      let formData = new FormData(this);// time location show-fav-place
-
-      // 将 FormData 转换为普通对象，便于后端传送
-      let formObject = {};
-      formData.forEach((value, key) => {
-        if (!formObject[key]) {
-          formObject[key] = value;
-        } else {
-          if (!Array.isArray(formObject[key])) {
-            formObject[key] = [formObject[key]];
-          }
-          formObject[key].push(value);
-        }
-      });
-      formObject['time'] = self.timeOptions[self.timeSelected].label;
-      if (!formObject['fav-place']){
-        formObject['fav-place'] = false; //人为添加false，不然没选择fav-place时该选项不会在formData里
-      }
-      console.log(formObject);
-
-      // 点,箭头,仪表盘是否显示，不传给后端，直接在前端处理
-      self.mark_options.locPoint = formObject['mark1'];
-      self.mark_options.routeArrow = formObject['mark2'];
-      self.mark_options.provinceName = formObject['mark3']
-      if (!self.enterProvince.value){
-        drawChinaMap(self.dialogVisible,self.mark_options);
-      }else{
-        updateProvinceMap(self.mark_options);
-      }
-
-      // 发送请求到后端
-      // axios.get(this.action, {
-      //   params: formObject
-      // })
-      //     .then(response => {
-      //       console.log(response.data); // 处理返回的数据
-      //       // 在这里更新页面上的内容
-      //     })
-      //     .catch(error => {
-      //       console.error('Error:', error);
-      //     });
-    });
   },
   methods: {
     toggleTimeSelectActive() {
@@ -191,8 +138,7 @@ export default {
       this.timeSelected = index;
     },
     backLink(){
-      this.enterProvince.value = false;
-      drawChinaMap(this.dialogVisible,this.mark_options);
+      drawChinaMap(this.dialogVisible);
     },
 
     handlePost(){
@@ -203,8 +149,7 @@ export default {
     handleVisited(){
       this.dialogVisible.value = false;
       console.log('你选择了标记去过');
-    },
-
+    }
   },
 };
 </script>
@@ -242,9 +187,6 @@ export default {
   height: 100%;
   background: #599592;
 }
-.map-module-container{
-  max-width: 1820px;
-}
 .bi-box-arrow-left {
   margin-right: -80px;
   margin-left: 40px;
@@ -252,7 +194,6 @@ export default {
   z-index: 10;
 }
 .map-view #trace-map {
-  max-width: 1100px;
   width:95%;
   background: #4d807e;
   height: 660px;

@@ -3,15 +3,17 @@
     <div class="alluser">
       <div class="head">
         <h3>好友列表</h3>
-        <div class="headsearch">
-          <el-input placeholder="请输入想要搜索的好友户的id或名字" v-model="searchUser">
-            <i
-              slot="suffix"
-              style="cursor: pointer"
-              class="el-input__icon el-icon-search"
-              @click="searchUserByIdOrName"
-            ></i>
-          </el-input>
+        <div class="headsearch" style="border: none;">
+          <ElInput
+    class="custom-input"
+    placeholder="请输入想要搜索的好友的id或名字"
+    v-model="searchUser"
+    border=none
+  >
+    <template #append>
+      <el-icon class="search-icon" style="cursor: pointer;" @click="searchUserByIdOrName"><Search /></el-icon>
+    </template>
+  </ElInput>
         </div>
       </div>
       <div class="fanorfollow_box">
@@ -32,17 +34,19 @@
               <span @click="personal(item.id)">{{ item.design }}</span>
             </div>
           </div>
-          <div class="fanorfollow_botton">
-            <el-button
-              @click="toggleFollow(item.id)"
-              type="primary"
-              size="small"
-              round
-              icon="el-icon-check"
-            >
-              {{ isFollowing(item.id) ? '已关注' : '关注' }}
-            </el-button>
-          </div>
+
+           <div class="fanorfollow_botton">
+      <el-button
+        @click="deleteFriend(item.id)"
+        type="danger"
+        size="small"
+        round
+        icon="delete"
+      >
+        删除
+      </el-button>
+    </div>
+
         </div>
         <div>
           <el-empty
@@ -57,7 +61,7 @@
   <div class="block">
     <el-pagination
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage"
+      v.model:current-page="currentPage"
       :page-size="pageSize"
       layout="prev, pager, next"
       :total="fansAndFollows.length">
@@ -67,13 +71,22 @@
 </template>
 
 <script>
+/*需要从后端传入的数据有：fansAndFollows: [{ id: 1, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: true}, ]*/
+/*相互传输isFollowing实现好友添加或者删除 */
+import { ref } from 'vue';
+import { ElInput, Search } from 'element-plus';
 export default {
   name: "MyFanAndFollow",
+  components: {
+    ElInput,
+    Search,
+  },
   data() {
+
     return {
       fansAndFollows: [
         // 模拟数据集
-        { id: 1, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: false },
+        { id: 1, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: true},
         { id: 2, nickname: '用户2', avatar: '~@/assets/avatar/male.png', isFollowing: true },
         { id: 3, nickname: '用户3', avatar: '~@/assets/avatar/male.png', isFollowing: true },
         { id: 4, nickname: '用户4', avatar: '~@/assets/avatar/male.png', isFollowing: true },
@@ -91,23 +104,36 @@ export default {
     personal(id) {
       this.$router.push({ path: `/newsuser/personal/${id}` });
     },
-    toggleFollow(id) {
-    const index = this.fansAndFollows.findIndex(item => item.id === id);
-    if (index !== -1) {
-      // 如果当前用户已经关注，则取消关注
-      if (this.fansAndFollows[index].isFollowing) {
-        this.fansAndFollows[index].isFollowing = false;
-      } else {
-        // 如果当前用户未关注，则关注
-        this.fansAndFollows[index].isFollowing = true;
+    /*仅此作为演示 */
+    deleteFriend(id) {
+      const index = this.fansAndFollows.findIndex(item => item.id === id);
+      if (index !== -1) {
+        this.fansAndFollows.splice(index, 1); // 移除好友
+        this.updateDisplayedUsers(); // 更新显示的用户列表
       }
-      // 更新显示的用户列表，以便反映关注状态的改变
-      this.updateDisplayedUsers();
-    }
-  },
-    isFollowing(id) {
-      return this.fansAndFollows.some(item => item.id === id && item.isFollowing);
     },
+
+    /* 后端实现 */
+    // deleteFriend(id) {
+    //   const index = this.fansAndFollows.findIndex(item => item.id === id);
+    //   if (index !== -1) {
+    //     // 设置 isFollowing 为 false，表示不再关注这个好友
+    //     this.fansAndFollows[index].isFollowing = false;
+    //     this.updateDisplayedUsers(); // 更新显示的用户列表
+
+    //     // 发送请求到后端 API 来永久删除好友(后端实现)
+    //     axios.delete(`/api/delete-friend/${id}`)
+    //       .then(response => {
+    //         console.log('Friend deleted successfully:', response.data);
+    //         this.updateDisplayedUsers(); // 更新显示的用户列表
+    //       })
+    //       .catch(error => {
+    //         console.error('Error deleting friend:', error);
+    //       });
+      // }
+
+
+
     searchUserByIdOrName() {
       if (this.searchUser) {
         this.displayedFansAndFollows = this.fansAndFollows.filter(item =>
@@ -164,8 +190,8 @@ border-color: deepskyblue;
 }
 
 .fanorfollow_left {
-width: 60px;
-height: 60px;
+width: 50;
+height: 50px;
 }
 
 .fanorfollow_img {
@@ -187,7 +213,7 @@ overflow: hidden;
 
 .fanorfollow_info_top {
 display: inline-block;
-font-size: 10px; /* 修正字体大小单位为 px */
+font-size: 15px; /* 修正字体大小单位为 px */
 line-height: 14px;
 vertical-align: top;
 cursor: pointer;
@@ -206,5 +232,14 @@ cursor: pointer;
 .fanorfollow_img:hover {
 cursor: pointer;
 }
-
+.headsearch .el-input__inner {
+  border: none;
+}
+.search-icon {
+  cursor: pointer;
+  /* 设置图标大小 */
+  font-size: 24px; /* 根据需要调整大小 */
+  width: 24px; /* 根据需要调整大小 */
+  height: 24px; /* 根据需要调整大小 */
+}
 </style>

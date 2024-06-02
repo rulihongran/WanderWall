@@ -88,7 +88,7 @@
       tabs: [
         { name: '故事', link: 'work' },
         { name: '好友', link: 'friend' },
-        { name: '推荐', link: 'addfri' },
+        { name: '推荐', link: 'addfriend' },
       ],
       activeTabIndex: 0         // 当前活动选项卡的索引
       };
@@ -220,7 +220,7 @@
   /* 如果需要的话，可以添加边框 */
   border: 1px solid transparent;
   position: absolute; /* 将叠加层设为绝对定位 */
-
+  pointer-events: none; /* 禁用点击行为 */
   }
 
    /*第三个底层 */
@@ -240,6 +240,7 @@
     width: 360px; /* 设置宽度为 360 像素 */
   height: 660px; /* 设置高度为 660 像素 */
   background-color: white; /* 设置底色为白色 */
+  pointer-events: auto; /* 使得right部分可点击 */
 }
 .avatar-container {
   width: 122px;
@@ -265,12 +266,14 @@
 }
 .el-menu-demo{
   top:190px;
+  pointer-events: auto; /* 使得部分可点击 */
 }
 .custom-menu-item {
   color: #333; /* 设置菜单项文字颜色 */
   font-weight: bold; /* 设置菜单项文字加粗 */
   font-size: large;
   padding: 10px 20px; /* 设置菜单项内边距 */
+  pointer-events: auto; /* 使得部分可点击 */
 }
 
 .body-right{
@@ -280,6 +283,7 @@
   /* height: 500px; */
   border-radius: 5px;
   background-color: white;
+  pointer-events: auto; /* 使得right部分可点击 */
 }
 
   </style>

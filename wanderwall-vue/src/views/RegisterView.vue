@@ -5,34 +5,30 @@
       <div class="login-container">
         <div class="form-container">
           <el-form :model="user" :rules="rules" ref="loginref" class="login-form">
-            <!-- 表单内容 -->
-            <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-          <el-form :model="user" style="width: 80%" :rules="rules" ref="registerref">
-
             <h2 style="margin: 20px">注册</h2>
             <el-form-item prop="username">
-                <el-input  prefix-icon="el-icon-user" size="large" placeholder="请输入账号" v-model="user.username" clearable></el-input>
+              <el-input class="custom-input" prefix-icon="user" size="large" placeholder="请输入账号" v-model="user.username" clearable></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input  prefix-icon="el-icon-lock" size="large" show-password placeholder="请输入密码" v-model="user.password" clearable></el-input>
+              <el-input class="custom-input" prefix-icon="lock" size="large" show-password placeholder="请输入密码" v-model="user.password" clearable></el-input>
             </el-form-item>
             <el-form-item prop="confirmpass">
-              <el-input  prefix-icon="el-icon-lock" size="large" show-password placeholder="请确认密码" v-model="user.confirmpass" clearable></el-input>
+              <el-input class="custom-input" prefix-icon="lock" size="large" show-password placeholder="请确认密码" v-model="user.confirmpass" clearable></el-input>
             </el-form-item>
             <el-form :model="user" :rules="specialrule" ref="verifyref">
               <el-form-item prop="email">
-              <el-input  prefix-icon="el-icon-message" size="large" placeholder="请输入邮箱" v-model="user.email"  clearable></el-input>
+                <el-input class="custom-input" prefix-icon="message" size="large" placeholder="请输入邮箱" v-model="user.email" clearable></el-input>
               </el-form-item>
             </el-form>
-            <div style="flex: 1; display: flex;"> 
-              <div style="flex: 1;"> 
+            <div style="flex: 1; display: flex;">
+              <div style="flex: 1;">
                 <el-form-item prop="code">
-                  <el-input  prefix-icon="el-icon-chat-dot-round" size="large" placeholder="输入验证码" v-model="user.code" clearable></el-input>
+                  <el-input class="custom-input" prefix-icon="chat-dot-round" size="large" placeholder="输入验证码" v-model="user.code" clearable></el-input>
                 </el-form-item>
               </div>
-              <div style="flex: 1;text-align: right;"> 
+              <div style="flex: 1;text-align: right;">
                 <el-form-item>
-                  <el-button type="primary" style="width: 90%;background-color:#5f9592" @click="verify">获取验证码</el-button>
+                  <el-button type="primary" style="width: 90%;height: 56px;background-color:#5f9592" @click="verify">获取验证码</el-button>
                 </el-form-item>
               </div>
             </div>
@@ -43,8 +39,6 @@
               <div style="flex: 1;margin-bottom: 30px">已有账号?去<span style="color:lightseagreen; cursor: pointer; text-decoration: underline;" @click="$router.push('/login')">登录</span></div>
             </div>
           </el-form>
-        </div> 
-          </el-form>
         </div>
       </div>
     </div>
@@ -52,63 +46,78 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
+
 export default {
   name: "RegisterView",
-  data() {
-    //密码一致校验
-    const confirm = (rule, value, callback) =>{
-      if(value === '')
-      {
-        callback(new Error('请确认密码'))
+  components: {
+    ElForm, ElFormItem, ElInput, ElButton
+  },
+  setup() {
+    // 密码一致校验
+    const confirm = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请确认密码'));
+      } else if (value !== this.user.password) {
+        callback(new Error('两次密码不一致'));
+      } else {
+        callback
+        callback();
       }
-      else if(value !== this.user.password)
-      {
-        callback(new Error('两次密码不一致'))
-      }
-      else
-      {
-        callback()
-      }
-    }
+    };
+
+    const user = ref({
+      username: '',
+      password: '',
+      confirmpass: '',
+      email: '',
+      code: ''
+    });
+    const rules = ref({
+      username: [
+        { required: true, message: '请输入账号', trigger: 'blur' },
+      ],
+      password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+      ],
+      confirmpass: [
+        { validator: confirm, trigger: 'blur' },
+      ],
+      email: [
+        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+      ],
+      code: [
+        { required: true, message: '请输入验证码', trigger: 'blur' },
+      ]
+    });
+    const specialrule = ref({
+      email: [
+        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+      ]
+    });
+
+    const register = () => {
+      // 注册逻辑
+      console.log('注册');
+    };
+
+    const verify = () => {
+      // 获取验证码逻辑
+      console.log('获取验证码');
+    };
 
     return {
-        user:{
-          username: '' ,
-          password: '' ,
-          confirmpass: '',
-          email: '',
-          code: ''
-        },
-        rules: {
-          username: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-          ],
-          confirmpass: [
-            { validator: confirm, trigger: 'blur' },
-          ],
-          email: [
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-  { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-          ],
-          code: [
-            { required: true, message: '请输入验证码', trigger: 'blur' },
-          ]
-        },
-        specialrule: {
-          email: [
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
- { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-          ]
-        }
-        }
-    },
-  created() {
+      user,
+      rules,
+      specialrule,
+      register,
+      verify
+    };
   }
 }
-   
 </script>
 
 <style scoped>
@@ -158,5 +167,7 @@ export default {
 .login-form {
   width: 80%;
 }
-
+::v-deep .custom-input .el-input__inner {
+  border: none;
+}
 </style>

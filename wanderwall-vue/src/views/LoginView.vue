@@ -1,18 +1,17 @@
 <template>
-    <div class="login-background">
-
-      <div class="flexcenter">
-        <div style="margin-right: 200px; z-index: 6;width: 30%"><img src="@/assets/wanderwall-logo.png" style="opacity: 0.7"></div>
-        <div class="login-container">
-          <div class="form-container">
-            <el-form :model="user" :rules="rules" ref="loginref" class="login-form">
-              <!-- 表单内容 -->
-              <h2 style="margin: 20px">登录</h2>
+  <div class="login-background">
+    <div class="flexcenter">
+      <div style="margin-right: 200px; z-index: 6;width: 30%"><img src="@/assets/wanderwall-logo.png" style="opacity: 0.7"></div>
+      <div class="login-container">
+        <div class="form-container">
+          <el-form :model="user" :rules="rules" ref="loginref" class="login-form">
+            <!-- 表单内容 -->
+            <h2 style="margin: 20px">登录</h2>
             <el-form-item prop="username">
-                <el-input  prefix-icon="el-icon-user" size="large" placeholder="请输入账号或邮箱" v-model="user.username" clearable></el-input>
+              <el-input class="custom-input" prefix-icon="User" size="large" placeholder="请输入账号或邮箱" v-model="user.username" clearable></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input  prefix-icon="el-icon-lock" size="large" show-password placeholder="请输入密码" v-model="user.password" clearable></el-input>
+              <el-input class="custom-input" prefix-icon="Lock" size="large" show-password placeholder="请输入密码" v-model="user.password" clearable></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" style="width: 100%; background-color:#5f9592" @click="$router.push('/')">登录</el-button>
@@ -21,34 +20,44 @@
               <div style="flex: 1;margin-bottom: 50px">还没有账号?去<span style="color:green; cursor: pointer; text-decoration: underline;" @click="$router.push('/register')">注册</span></div>
               <div style="flex: 1;text-align: right;"><span style="color:green; cursor: pointer; text-decoration: underline;" @click="$router.push('/findpass')">忘记密码?</span></div>
             </div>
-            </el-form>
-          </div>
+          </el-form>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "LoginView",
-    data() {
-      return {
-        user: {
-          username: '',
-          password: ''
-        },
-        rules: {
-          username: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-          ],
-        }
-      }
-    },
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
+
+export default {
+  name: "LoginView",
+  components: {
+    ElForm, ElFormItem, ElInput, ElButton
+  },
+  setup() {
+    const user = ref({
+      username: '',
+      password: ''
+    });
+
+    const rules = {
+      username: [
+        { required: true, message: '请输入账号', trigger: 'blur' },
+      ],
+      password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+      ],
+    };
+
+    return {
+      user,
+      rules
+    };
   }
-  </script>
+}
+</script>
   
   <style scoped>
   .login-background {
@@ -107,6 +116,10 @@
   .login-form {
     width: 80%;
   }
+
+  ::v-deep .custom-input .el-input__inner {
+  border: none;
+}
   
   </style>
   
