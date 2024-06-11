@@ -1,4 +1,5 @@
 import echarts from 'echarts';
+import store from "@/store/index";
 
 let timeTickId, timer, max;
 export function drawGauge() {
@@ -168,8 +169,23 @@ function createPolarGauge(chart,data) {
 }
 
 function setGaugeOption(chart,option,data) { //更新数据
-    data.num = parseInt(Math.random() * max);
+    let userId = store.state.user_id;
+
+    // 发送POST请求，获取旅行记录数据
+    // axios.post('/api/travel-rank', { userId })
+    //     .then(response => {
+    //         //let city_num = response.data.city_num;
+    //         //let rank = response.data.rank;
+    //     })
+    //     .catch(error => {
+    //         console.error('数据请求失败:', error);
+    //     });
+
+    data.num = parseInt(Math.random() * max);//TODO:后端写好后把这行注释
     option.series[2].data[0].value = data.num;
     option.series[0].data[0].value = data.num;
+    //option.series[0].data[0].value = city_num;
+    //option.series[0].data[0].value = rank;
+
     chart.setOption(option);
 }

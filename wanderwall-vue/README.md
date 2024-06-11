@@ -16,9 +16,12 @@ npm install
 @vue/cli-plugin-vuex@5.0.8
 @vue/cli-service@5.0.8
 core-js@3.36.1
-echarts@4.9.0 （Attention!!!）
+echarts@4.9.0
 element-china-area-data@6.1.0
 element-plus@2.7.2
+hammerjs@2.0.8
+jquery@3.7.1
+swiper@8.4.7(new)
 vue-router@4.3.0
 vue@3.4.21
 vuex@4.1.0

@@ -6,9 +6,9 @@
         <span class="blog-heading">博客</span
         ><span class="blog-subheading">旅行记录</span>
       </div>
-      <div class="paper-edge"></div>
       <div class="blog-image-background"></div>
       <div class="overlay"></div>
+      <div class="paper-edge"></div>
     </div>
 
     <span class="blog-create">新建博客</span>

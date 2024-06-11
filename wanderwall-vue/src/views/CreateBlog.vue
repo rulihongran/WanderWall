@@ -2,7 +2,7 @@
   <Header/>
   <input type="file" ref="fileInput" style="display: none" />
   <div class="main-container">
-    <div class="container" v-if="!isEdit">
+    <div class="blog-detail-container" v-if="!isEdit">
       <div class="cover">
         <img :src="getCover(blog.cover)" :alt="请上传封面" class="blog-cover">
       </div>
@@ -22,12 +22,12 @@
       </div>
       <span class="title">{{ blog.title }}</span>
       <div class="author-time">
-        <span class="author">by {{ blog.author }} |</span>
+        <span class="author">by {{ blog.author }}  |</span>
         <span class="time">{{blog.date || this.getcurrentdate()}}</span>
       </div>
     </div>
 
-    <div class="container" v-if="isEdit">
+    <div class="blog-detail-container" v-if="isEdit">
       <div class="cover">
         <img :src="getCover(temporaryblog.cover)" :alt="请上传封面" class="blog-cover">
       </div>
@@ -64,10 +64,10 @@
 
       <el-button class="black-button" @click="Edit"><el-icon>
           <Edit />
-        </el-icon>Edit</el-button>
+        </el-icon>编辑</el-button>
       <el-button class="black-button" @click="Delete"><el-icon>
           <Delete />
-        </el-icon>Delete
+        </el-icon>删除
       </el-button>
     </el-button-group>
     <template v-else>
@@ -77,10 +77,10 @@
         <el-button-group class="button" >
           <el-button class="black-button" @click="Save"><el-icon>
               <DocumentChecked />
-            </el-icon>Save</el-button>
+            </el-icon>保存</el-button>
           <el-button class="black-button" @click="Delete"><el-icon>
               <Delete />
-            </el-icon>Delete
+            </el-icon>删除
           </el-button>
           <el-button class="black-button" @click="addtextbox(this.temporaryblog.paragh.length, 1)"><el-icon>
               <ChatLineSquare />
@@ -139,7 +139,7 @@
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
-        <el-input v-model="item.content" class="text-title" autosize type="textarea"></el-input>
+        <el-input v-model="item.content" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
@@ -164,7 +164,7 @@
           </el-button>
         </el-button-group>
         <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
-        <el-input v-model="item.dsc" class="picture-desc" autosize type="textarea"></el-input>
+        <el-input v-model="item.dsc" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index,0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addimage(index,0)">在下方插入图片
@@ -256,6 +256,10 @@ export default {
 
     tiedit() {
         this.titleedit = !this.titleedit;
+        this.temporaryblog.paragh.forEach((item, i) => {
+          if(item.content!=='')
+             item.editing = false;
+      });
     },
     addressChange(arr) {
       this.temporaryblog.province=codeToText[arr[0]];

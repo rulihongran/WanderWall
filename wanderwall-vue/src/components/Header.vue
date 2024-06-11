@@ -4,25 +4,27 @@
       <div id="navigation-sticky-wrapper" class="sticky-wrapper" style="height: 82px;">
         <nav id="navigation" class="navigator" role="navigation" style="background: black; padding-top: 15px;height: 82px;border-color: black">
           <div class="header-container" >
-            <div id="logo" style="padding-left: 10%">
-              <a href="https://theworldtravelguy.com/">
+            <div id="logo" style="padding-left: 7%">
+              <a href="/">
                 <img class="penci-mainlogo penci-limg penci-logo" src="../assets/wanderwall-logo.png" alt="The World Travel Guy" width="230" height="100"> </a>
             </div>
             <!--菜单-->
-            <ul id="menu-menu-1" class="menu" style="padding-left: 15%;padding-right: 15%">
+            <ul id="menu-menu-1" class="menu" style="padding-left: 10%;padding-right: 8%">
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/') }"><a href="/" style="font-size: 14px">Home</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/tracemap/') }" ><a href="/tracemap/" style="font-size: 14px" >Trace Map</a></li>
+              <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/relation-graph/') }" ><a href="/relation-graph/" style="font-size: 14px" >Travel Relation</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/blog/') }"><a href="/blog/" style="font-size: 14px">Blog</a></li>
               <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/gallery/') }"><a href="/gallery/"style="font-size: 14px">Gallery</a></li>
+              <li id="menu-item-1432" :class="{ 'megamenu menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item ajax-mega-menu menu-item-1432': isActive('/report') }"><a href="/report"style="font-size: 14px">Report</a></li>
             </ul>
             <!--未登录-->
             <div v-if = "!isLoggedIn" class="nav-v2-dynamic__logged-out">
               <a class="login-button" href="/login">Log in</a>
-              <a class="signup-button" href="/signup">Sign up</a>
+              <a class="signup-button" href="/register">Sign up</a>
             </div>
             <!--已登录-->
             <div v-else class="nav-v2-avatar">
-              <a data-nav-v2-avatar="true" title="Open profile" href="/">
+              <a data-nav-v2-avatar="true" title="Open profile" href="/userinfo">
                 <img class="nav-v2-avatar__image" alt="avatar" :src="avatarPath" />
               </a>
               <div class="nav-v2-profile" data-nav-v2-profile data-nav-event-category="Profile">
@@ -35,13 +37,13 @@
                   </div>
                   <ul class="nav-v2-profile__menu">
                     <li class="nav-v2-profile__item">
-                      <a data-nav-event-clicked="Work preferences" data-open-availability-modal="work-types" href="/pictures">Pictures</a>
+                      <a data-nav-event-clicked="Work preferences" data-open-availability-modal="work-types" href="/userinfo">Pictures</a>
                     </li>
                     <li class="nav-v2-profile__item">
-                      <a data-nav-event-clicked="Settings" href="/friends">Friends</a>
+                      <a data-nav-event-clicked="Settings" href="/friend">Friends</a>
                     </li>
                     <li class="nav-v2-profile__item">
-                      <a data-nav-event-clicked="Settings" href="/setting">Settings</a>
+                      <a data-nav-event-clicked="Settings" href="/edit">Settings</a>
                     </li>
                     <li class="nav-v2-profile__item nav-v2-profile__item--divided">
                       <button @click="logout">Sign out</button>

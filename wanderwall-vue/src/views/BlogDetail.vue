@@ -6,7 +6,7 @@
       <div class="cover">
         <img :src="getCover(blog.cover)" :alt="请上传封面" class="blog-cover">
       </div>
-<!--      <div class="shadow"></div>-->
+      <div class="shadow"></div>
 
       <div class="tag">
         <template v-if="blog.province !== ''">
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="container" v-if="isEdit">
+    <div class="blog-detail-container" v-if="isEdit">
       <div class="cover">
         <img :src="getCover(temporaryblog.cover)" :alt="请上传封面" class="blog-cover" >
       </div>
@@ -148,7 +148,7 @@
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
-        <el-input v-model="item.content" class="text-title" autosize type="textarea"></el-input>
+        <el-input v-model="item.content" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
@@ -174,7 +174,7 @@
           </el-button>
         </el-button-group>
         <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
-        <el-input v-model="item.dsc" class="picture-desc" autosize type="textarea"></el-input>
+        <el-input v-model="item.dsc" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
@@ -457,6 +457,10 @@ export default {
 
     tiedit() {
       this.titleedit = !this.titleedit;
+      this.temporaryblog.paragh.forEach((item, i) => {
+          if(item.content!=='')
+             item.editing = false;
+      });
     },
 
     addressChange(arr) {
