@@ -108,7 +108,8 @@ export default {
     const register = () => {
     
       if (1) {  // 表单校验合法
-          request.post("/user/register", user).then(res => {
+        console.log(user.value);
+          request.post("/user/register", user.value).then(res => {
             if(res.code === '200') {
               //this.$message.success("注册成功")
               console.log("注册成功")

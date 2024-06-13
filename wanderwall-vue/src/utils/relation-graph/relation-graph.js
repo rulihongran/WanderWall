@@ -2,56 +2,66 @@ import "./d3.v3.min.js"
 import "./jquery-3.4.1.min.js"
 import "./materialize.min.js"
 import {initKG} from "./graph-render.js"
-import axios from "axios"
+import request from '@/utils/request'
 import store from "./../../store/index"
+
 
 export async function drawRelationGraph()
 {
-    let graphNodesArray = {
-        "1": {"name": "欲盖弥彰", "type": "User"},
-        "8": {"name": "道德天尊", "type": "Friend1"},
-        "9": {"name": "云海", "type": "Friend2"},
-        "10": {"name": "史彦彬", "type": "Friend3"},
-        "11": {"name": "(´-ι_-｀)", "type": "Friend4"},
-        "2": {"name": "上海", "type": "City"},
-        "3": {"name": "重庆", "type": "City"},
-        "4": {"name": "北京", "type": "City"},
-        "5": {"name": "扬州",  "type": "City"},
-        "6": {"name": "杭州",  "type": "City"},
-        "7": {"name": "百色",  "type": "City"},
+    const username=JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara";
+    let graphNodesArray = //graphNodesArray1;
+    {
+        "das": {"name": "李永恒","type": "User"},
+        "2": {"name": "谢奔",  "type": "Friend1"},
+        "3": {"name": "苏子言","type": "Friend2"},
+        "4": {"name": "史彦彬","type": "Friend3"},
+        "5": {"name": "张婧璇","type": "Friend4"},
+        "上海": {"name": "上海",  "type": "City"},
+        "重庆": {"name": "重庆",  "type": "City"},
+        "北京": {"name": "北京",  "type": "City"},
+        "扬州": {"name": "扬州",  "type": "City"},
+        "杭州": {"name": "杭州", "type": "City"},
+        "百色": {"name": "百色", "type": "City"},
     };
 
-    let graphLinksArray = [
-        {"source": 1, "target": 2, "rela": "居住"},
-        {"source": 1, "target": 3, "rela": "家乡"},
-        {"source": 1, "target": 4, "rela": "去过"},
-        {"source": 1, "target": 5, "rela": "去过"},
-        {"source": 1, "target": 6, "rela": "去过"},
-        {"source": 8, "target": 2, "rela": "居住"},
-        {"source": 8, "target": 4, "rela": "去过"},
-        {"source": 8, "target": 5, "rela": "去过"},
-        {"source": 8, "target": 7, "rela": "家乡"},
-        {"source": 9, "target": 2, "rela": "居住"},
-        {"source": 9, "target": 6, "rela": "去过"},
-        {"source": 10, "target": 5, "rela": "去过"},
-        {"source": 10, "target": 2, "rela": "家乡"},
-        {"source": 11, "target": 6, "rela": "去过"}
+    let graphLinksArray = //graphLinksArray2;
+    [
+        {"source": "das", "target": "上海", "rela": "居住"},
+        {"source": "das", "target": "重庆", "rela": "家乡"},
+        {"source": "das", "target": "北京", "rela": "去过"},
+        {"source": "das", "target": "扬州", "rela": "去过"},
+        {"source": "das", "target": "杭州", "rela": "去过"},
+        {"source": "2", "target": "上海", "rela": "居住"},
+        {"source": "2", "target": "上海", "rela": "去过"},
+        {"source": "2", "target": "上海", "rela": "去过"},
+        {"source": "2", "target": "上海", "rela": "家乡"},
     ];
-
+    // request({
+    //     url: '/user/friend/rela',
+    //     method: 'post',
+    //     params: { username:username },
+    //   }).then(res =>  {
+    //    graphNodesArray=res.data.nodes;
+    //    graphLinksArray=res.data.links;
+    //    console.log(graphNodesArray);
+    //    console.log(graphLinksArray);
+    //    });
     const userID = store.state.user_id;
     let data = {};
-    // try {
-    //     const response = await axios.get("http://127.0.0.1:4523/m1/4475987-4122489-default/api/get-relation-graph");
-    //     const graphData = response.data.data;
-    //     data.nodes = graphData.nodes;
-    //     data.links = graphData.links;
-    //     console.log("Graph data loaded successfully:", data.nodes);
-    //     console.log("link:",data.links);
-    // } catch (error) {
-    //     console.error("Error fetching the relation graph:", error);
-    // }
-    data.nodes = graphNodesArray;
-    data.links = graphLinksArray;
+    try {
+        await request({
+            url: '/user/friend/rela',
+            method: 'post',
+            params: { username:username },
+          }).then(res =>  {
+            data.nodes=res.data.nodes;
+            data.links=res.data.links;
+           });
+    } catch (error) {
+        console.error("Error fetching the relation graph:", error);
+    }
+    // data.nodes = graphNodesArray;
+    // data.links = graphLinksArray;
     let config = {
         content: null,
         contentHook: null,
@@ -61,4 +71,5 @@ export async function drawRelationGraph()
         height: 600
     }
     initKG(data, config, "#relation-container");
+    //console.log(graphNodesArray.das);
 }

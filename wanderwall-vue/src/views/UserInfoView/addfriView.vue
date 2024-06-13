@@ -19,7 +19,7 @@
       <div class="fanorfollow_box">
         <div
           class="fanorfollow"
-          v-for="item in displayedFansAndFollows"
+          v-for="item in fansAndFollows"
           :key="item.id"
         >
           <div class="fanorfollow_left">
@@ -84,15 +84,9 @@ export default {
   data() {
     return {
       fansAndFollows: [
-        // 模拟数据集
-        { id: 1, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: true},
-        { id: 2, nickname: '用户2', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 3, nickname: '用户3', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 4, nickname: '用户4', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 5, nickname: '用户5', avatar: '~@/assets/avatar/male.png', isFollowing: true},
-        { id: 6, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        // ...更多用户
+      
       ],
+      username:JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",
       searchUser: '',
       displayedFansAndFollows: [], // 用于显示搜索结果或全部用户
       currentPage: 1, // 当前页码
@@ -100,49 +94,42 @@ export default {
     };
   },
   methods: {
+    load() {
+      this.$http({
+        url: '/user/findAll',
+        method: 'post',
+        params: { username:this.username },
+      }).then(res =>  {
+        this.fansAndFollows =res.data;   
+        console.log(this.fansAndFollows);
+       })
+      },
     personal(id) {
       this.$router.push({ path: `/newsuser/personal/${id}` });
     },
 
     /*仅此作为演示 */
     addFriend(id) {
-      // 这里实现添加好友的逻辑
-      // 例如，您可以弹出一个对话框，让用户输入好友的信息
-      // 或者，您可以从一个推荐好友列表中选择添加
-      // 这里只是一个示例，您需要根据实际需求实现逻辑
-      // 假设您有一个推荐的好友列表，并且已经选择了要添加的好友
-      const friendToAdd = this.fansAndFollows.findIndex(item => item.id === id);
-
-      // 检查是否找到了要添加的好友
-      if (friendToAdd) {
-        // 添加好友到本地好友列表
-        this.fansAndFollows.push(friendToAdd);
-        // 更新显示的用户列表
-        this.updateDisplayedUsers();
-
-        // 这里可以添加代码发送请求到后端API来永久添加好友
-        // axios.post('/api/add-friend', { friendId: friendToAdd.id })
-        //      .then(response => {
-        //         console.log('Friend added successfully:', response.data);
-        //         this.updateDisplayedUsers(); // 更新显示的用户列表
-        //      })
-        //      .catch(error => {
-        //         console.error('Error adding friend:', error);
-        //      });
-
-        // 显示添加好友成功的提示
-        alert('添加好友成功！');
-      } else {
-        // 如果没有找到要添加的好友，显示错误提示
-        alert('未找到该好友，添加失败！');
-      }
+      const user = this.fansAndFollows.filter(item =>
+          item.id.toString().includes(id)
+        );
+        console.log(user);
+      this.$http({
+        url: '/user/addfriend',
+        method: 'post',
+        params: { username:this.username,fiendid:id,friendname:user[0].username },
+      }).then(res =>  { 
+        this.$message.success('添加成功');
+        this.load();
+       });
     },
 
     searchUserByIdOrName() {
       if (this.searchUser) {
-        this.displayedFansAndFollows = this.fansAndFollows.filter(item =>
+        this.fansAndFollows = this.fansAndFollows.filter(item =>
           item.nickname.includes(this.searchUser) || item.id.toString().includes(this.searchUser)
         );
+        this.updateDisplayedUsers();
       } else {
         // 如果搜索框为空，显示全部用户
         this.updateDisplayedUsers();
@@ -160,6 +147,7 @@ export default {
   },
   mounted() {
     // 初始化时显示全部用户
+    this.load();
     this.updateDisplayedUsers();
   },
   

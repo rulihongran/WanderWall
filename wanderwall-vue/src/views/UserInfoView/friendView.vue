@@ -87,23 +87,13 @@ export default {
       username:JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",
       searchUser: '',
       fansAndFollows:[
-        // 模拟数据集
-        { id: 1, nickname: '用户1', avatar: '~@/assets/avatar/male.png', isFollowing: false },
-        { id: 2, nickname: '用户2', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 3, nickname: '用户3', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 4, nickname: '用户4', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        { id: 5, nickname: '用户5', avatar: '~@/assets/avatar/male.png', isFollowing: true},
-        { id: 6, nickname: '用户6', avatar: '~@/assets/avatar/male.png', isFollowing: true },
-        // ...更多用户
+       
       ],
       tableData:[],
       displayedFansAndFollows: [], // 用于显示搜索结果或全部用户
       currentPage: 1, // 当前页码
       pageSize: 5, // 每页显示的好友数量
     };
-  },
-  created() {
-    this.load();
   },
   methods: {
     personal(id) {
@@ -113,8 +103,14 @@ export default {
     deleteFriend(id) {
       const index = this.fansAndFollows.findIndex(item => item.id === id);
       if (index !== -1) {
-        this.fansAndFollows.splice(index, 1); // 移除好友
-        this.updateDisplayedUsers(); // 更新显示的用户列表
+        this.$http({
+        url: '/user/deletefriend',
+        method: 'post',
+        params: { username:this.username,fiendid:id },
+      }).then(res =>  { 
+       this.$message.success('删除成功');
+       this.load();
+       });
       }
     },
     load() {
@@ -147,9 +143,10 @@ export default {
       // }
     searchUserByIdOrName() {
       if (this.searchUser) {
-        this.displayedFansAndFollows = this.fansAndFollows.filter(item =>
+        this.fansAndFollows = this.fansAndFollows.filter(item =>
           item.nickname.includes(this.searchUser) || item.id.toString().includes(this.searchUser)
         );
+        this.updateDisplayedUsers();
       } else {
         // 如果搜索框为空，显示全部用户
         this.updateDisplayedUsers();
@@ -167,8 +164,8 @@ export default {
   },
   mounted() {
     // 初始化时显示全部用户
+    this.load();
     console.log(this.fansAndFollows);
-    this.fansAndFollows;
     this.updateDisplayedUsers();
   },
   

@@ -1,5 +1,6 @@
 package com.web.springboot.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.web.springboot.entity.Friendship;
 import com.web.springboot.entity.User;
 import java.util.List;
 
@@ -12,17 +13,20 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM user ")
-    User findall();
+    @Select("SELECT * FROM user where user.id not in (SELECT f.friend_id from friendship as f where  f.username = #{username}) and user.username!= #{username}")
+    List<User> findall(String username);
 
     @Insert("INSERT INTO user(username,nickname,password,sex,phone,email,address,signature,birsday,work,habit,bucket,object) VALUES(#{username},#{nickname},#{password},#{sex},#{phone},#{email},#{address},#{signature},#{birsday},#{work},#{habit},#{bucket},#{object})")
     int insert(User user);
 
-    @Update("UPDATE user SET username=#{username},nickname=if (#{nickname} IS NOT NULL, #{nickname}, nickname),password=if (#{password} IS NOT NULL, #{password}, password),sex=if (#{sex} IS NOT NULL, #{sex}, sex),phone=if (#{phone} IS NOT NULL, #{phone}, phone),email=if (#{email} IS NOT NULL, #{email}, email),address=if (#{address} IS NOT NULL, #{address}, address),signature=if (#{signature} IS NOT NULL, #{signature}, signature),birsday=if (#{birsday} IS NOT NULL, #{birsday}, birsday),work=if (#{work} IS NOT NULL, #{work}, work),habit=if (#{habit} IS NOT NULL, #{habit}, habit),bucket=if (#{bucket} IS NOT NULL, #{bucket}, bucket),object=if (#{object} IS NOT NULL, #{object}, object) WHERE id=#{id} ")
+    @Insert("INSERT INTO friendship (username, friend_id, friend_username) VALUES (#{username}, #{friend_id}, #{friend_username})")
+    int addfriend(Friendship friendship);
+
+    @Update("UPDATE user SET nickname=if (#{nickname} IS NOT NULL, #{nickname}, nickname),password=if (#{password} IS NOT NULL, #{password}, password),sex=if (#{sex} IS NOT NULL, #{sex}, sex),phone=if (#{phone} IS NOT NULL, #{phone}, phone),email=if (#{email} IS NOT NULL, #{email}, email),address=if (#{address} IS NOT NULL, #{address}, address),signature=if (#{signature} IS NOT NULL, #{signature}, signature),birsday=if (#{birsday} IS NOT NULL, #{birsday}, birsday),work=if (#{work} IS NOT NULL, #{work}, work),habit=if (#{habit} IS NOT NULL, #{habit}, habit),bucket=if (#{bucket} IS NOT NULL, #{bucket}, bucket),object=if (#{object} IS NOT NULL, #{object}, object) WHERE username=#{username} ")
     int update(User user);
 
-    @Delete("DELETE FROM user WHERE id=#{id}")
-    Integer delete( @Param("id")  int id);
+    @Delete("DELETE FROM friendship WHERE username=#{username} and friend_id=#{id}")
+    Integer delete( @Param("username") String username ,@Param("id")  int id);
 
     @Select("SELECT * FROM user limit #{page},#{size}")
     List<User> findpage(int page, int size);
@@ -41,4 +45,7 @@ public interface UserMapper {
 
     @Select("select * from user where user.id in (SELECT f.friend_id from friendship as f where f.username = #{username})  ")
     List<User> getfriends(@Param("username") String username);
+
+    @Select("select distinct city from blog where username = #{username}")
+    List<String> findcitys(String username);
 }

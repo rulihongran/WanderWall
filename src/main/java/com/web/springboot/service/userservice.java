@@ -2,7 +2,10 @@ package com.web.springboot.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -26,6 +29,8 @@ import com.web.springboot.common.Constants;
 import com.web.springboot.controler.dto.userdto;
 import com.web.springboot.entity.Friendship;
 import com.web.springboot.entity.User;
+import com.web.springboot.entity.graphLinksArray;
+import com.web.springboot.entity.graphNodesArray;
 import com.web.springboot.exception.ServiceException;
 
 @Service
@@ -48,14 +53,9 @@ public class userservice {
      }
     }
 
-    public User findall()
+    public List<User> findall(String username)
     {
-        return usermapper.findall();
-    }
-
-    public int delete(Integer id)
-    {
-      return usermapper.delete(id);
+        return usermapper.findall(username);
     }
 
     public List<User> findpage(Integer page, Integer size)
@@ -183,5 +183,61 @@ public class userservice {
     {
         usermapper.update(user);
     }
+    
+    public void deletefriend (String username,Integer friendid)throws Exception
+    {
+       usermapper.delete(username,friendid);  
+    }
 
+    public void addfriend (String username,Integer friendid,String friendname)throws Exception
+    {
+        Friendship friendship = new Friendship();
+        friendship.setUsername(username);
+        friendship.setFriend_id(friendid);;
+        friendship.setFriend_username(friendname);
+        usermapper.addfriend(friendship);
+    }
+
+    public Map<String,Object> friendrela(String username)
+    {
+        Map<String,graphNodesArray> m1= new HashMap<>();
+        List<graphLinksArray> m2= new ArrayList<>();
+        graphNodesArray g1 = new graphNodesArray();
+        g1.setName(username); 
+        g1.setType("User");
+        m1.put(username,g1);
+        
+        // 使用普通循环代替 forEach
+        List<String>cityList= new ArrayList<>();
+        List<User> friendList = usermapper.getfriends(username);
+        for (User user : friendList) {
+            graphNodesArray g2 = new graphNodesArray();
+            g2.setName(user.getUsername()); 
+            g2.setType("Friend" + user.getId());
+            m1.put(user.getUsername(), g2);
+        }
+        for (graphNodesArray value : m1.values()) {  
+            List<String> citys = usermapper.findcitys(value.getName());
+            for (String city : citys) {
+                if (!cityList.contains(city)) {
+                    cityList.add(city);
+                }
+                graphLinksArray g3 = new graphLinksArray();
+                g3.setSource(value.getName());
+                g3.setTarget(city);
+                g3.setRela("去过");
+                m2.add(g3);
+            }
+            }
+        for (String city : cityList) {
+            graphNodesArray g4 = new graphNodesArray();
+            g4.setName(city);
+            g4.setType("City");
+            m1.put(city, g4);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("nodes", m1);
+        map.put("links", m2);
+        return map;
+    } 
 }

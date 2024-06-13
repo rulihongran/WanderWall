@@ -2,9 +2,9 @@
   <div >
     <el-card style="height: 100%;">
       <el-descriptions class="margin-top" title="简介" :column="2" border>
-        <template #extra>
-          <el-button type="primary" size="small" @click="isEditing = !isEditing">{{ isEditing ? '保存' : '修改个人信息' }}</el-button>
-        </template>
+        <template #extra v-if=1>
+        <el-button type="primary" size="small" @click="isEditing = !isEditing;saveProfile()">{{ isEditing ? '保存' : '修改个人信息' }}</el-button>
+      </template>
 
          <!-- Image File ID Field -->
       <el-descriptions-item>
@@ -138,6 +138,8 @@
 </template>
 
 <script>
+import { data } from 'jquery';
+
 
 /*需要后端实现传入和存入下面的示例数据*/
 export default {
@@ -149,7 +151,7 @@ export default {
       /* 从后端传过来一下数据就可以，*/
       selectedfile: null, // 新的文件对象
       avatar: '//game.gtimg.cn/images/lol/act/img/champion/Annie.png',
-      account: 'user123',
+      account:JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",
       birthdayYear: '1995',
       birthdayMonth: '5',
        birthdayDay: '5',
@@ -162,7 +164,7 @@ export default {
       hobby: '阅读, 旅游',
       design: '生活就像海洋，只有意志坚强的人才能到达彼岸。',
       bucket:'userinfo',
-      object:this.username+"_avatar",
+      object:JSON.parse(localStorage.getItem("username")).toString()+"_avatar",
     };
   },
   created() {
@@ -181,6 +183,17 @@ export default {
     handleAvatarSuccess(res, file) {
       this.avatar = URL.createObjectURL(file.raw);
     },
+    saveProfile() {
+    if (!this.isEditing) {
+      this.$http({
+        url: '/user/update/userinfo',
+        method: 'post',
+        data: { username:this.username, nickname:this.nickname, sex:this.sex, birsday:this.birthdayYear+"-"+this.birthdayMonth+"-"+this.birthdayDay, email:this.email, phone:this.mobilePhoneNumber, address:this.area, work:this.work, habit:this.hobby, signature:this.design, bucket:this.bucket, object:this.object},
+      }).then(res =>  { 
+        console.log(this.fansAndFollows);
+       });
+    }
+  },
     load() {
         this.$http.get("/user/"+this.username).then(res => {
           console.log(res.signature)
@@ -188,9 +201,11 @@ export default {
         this.nickname = res.nickname? res.nickname :this.nickname
         this.sex = res.sex? res.sex :this.sex
         this.str=res.birsday? res.birsday :this.str
+        if(this.str!=null){
         this.birthdayYear =this.str.split("-")[0]? this.str.split("-")[0] :this.birthdayYear
         this.birthdayMonth = this.str.split("-")[1]? this.str.split("-")[1] :this.birthdayMonth
         this.birthdayDay = this.str.split("-")[2]? this.str.split("-")[2] :this.birthdayDay
+        }
         this.email = res.email? res.email :this.email
         this.mobilePhoneNumber = res.phone? res.phone :this.mobilePhoneNumber
         this.area = res.address? res.address :this.area
@@ -202,6 +217,21 @@ export default {
         // this.backgroundImage=res.backgroundImage? res.backgroundImage :this.backgroundImage
         // this.tableData = res.data.records
         // this.total = res.dsignatureata.total
+        this.$http({
+        url: '/user/download/avatar',
+        method: 'post',
+        params: {bucket: this.bucket, object: this.object},
+        //responseType:'blob'
+      }).then(res =>  {
+         console.log(res);
+          const url = res;
+          // let blob = new window.Blob([res], {type: 'image/png'});
+          // console.log(blob);
+          // let url = window.URL.createObjectURL(blob);
+          // this.src = url;
+          this.avatar=url?url:this.backgroundImage;
+      }
+    );
       });
     //   this.$http({
     //     url: '/user/download/background',
@@ -215,18 +245,6 @@ export default {
     //   }
     // );
       }, 
-    updateinfo()
-    {
-      this.isEditing = !this.isEditing
-      this.$http({
-        url: '/user/update/userinfo',
-        method: 'post',
-        params: { username:this.username, nickname:this.nickname, sex:this.sex, birsday:this.birthdayYear+"-"+this.birthdayMonth+"-"+this.birthdayDay, email:this.email, phone:this.mobilePhoneNumber, address:this.area, work:this.work, habit:this.hobby, signature:this.design, bucket:this.bucket, object:this.object},
-      }).then(res =>  {
-        this.fansAndFollows =[];   
-        console.log(this.fansAndFollows);
-       })
-    },
     triggerFileInput() {
       this.$refs.fileInput.value = '';
       this.$refs.fileInput.click();
@@ -246,7 +264,8 @@ export default {
         data: formData,
         headers: {'Content-Type': "multipart/form-data"},
       }).then(res =>  {
-          console.log(res); 
+        this.object=res.data;
+          console.log(res.data); 
       }
     );
   if (this.selectedfile) {
@@ -262,9 +281,6 @@ export default {
   }
 }
 
-  },
-  watchEffect: {
-    
   },
 };
 </script>

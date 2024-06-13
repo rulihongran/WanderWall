@@ -1,10 +1,16 @@
 package com.web.springboot.controler;
 import com.web.springboot.entity.User;
 import com.web.springboot.entity.Friendship;
+import com.web.springboot.entity.graphLinksArray;
+import com.web.springboot.entity.graphNodesArray;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.web.springboot.common.Constants;
 import com.web.springboot.common.result;
@@ -38,12 +44,18 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import io.minio.BucketExistsArgs;
+import io.minio.DownloadObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
+import io.minio.Result;
 import io.minio.SetBucketPolicyArgs;
+import io.minio.StatObjectArgs;
+import io.minio.StatObjectResponse;
 import io.minio.http.Method;
+import io.minio.messages.Item;
 import jakarta.annotation.Resource;
 
 @RestController
@@ -112,7 +124,7 @@ public class usercontroler {
         }
         file.transferTo(uploadFile);
         url = "/file/" + fileUUID;
-        userservice.uploadbackground(filesUploadPath + fileUUID,"userinfo",username+StrUtil.DOT + type);
+        userservice.uploadbackground(filesUploadPath + fileUUID,"userinfo",username+"_"+"background"+StrUtil.DOT + type);
         return result.success(url);
     }
 
@@ -132,14 +144,13 @@ public class usercontroler {
             parentFile.mkdirs();
         }
         file.transferTo(uploadFile);
-        url = "/file/" + fileUUID;
+        
         userservice.uploadbackground(filesUploadPath + fileUUID,"userinfo",username+"_"+"avatar"+StrUtil.DOT + type);
-        return result.success(url);
+        return result.success(username+"_"+"avatar"+ StrUtil.DOT + type);
     }
 
     @PostMapping("/update/userinfo")
     public result updateuserinfo(@RequestBody User user) throws Exception {
-        System.out.println(user);
         userservice.updateuserinfo(user);
         return result.success();
     }
@@ -147,7 +158,7 @@ public class usercontroler {
 
     @RequestMapping(value = "/download/background",method = RequestMethod.POST,produces = MediaType.IMAGE_PNG_VALUE)
     private String getPic(@RequestParam("username") String username) throws Exception {
-    username=userservice.downloadbackground("userinfo",username,filesUploadPath);
+    username=userservice.downloadbackground("userinfo",username+"_"+"background",filesUploadPath);
         if(username.isEmpty())
         {
             return null;
@@ -165,6 +176,40 @@ public class usercontroler {
         //return picInput.readAllBytes();
     }
 
+
+    @RequestMapping(value = "/download/avatar",method = RequestMethod.POST,produces = MediaType.IMAGE_PNG_VALUE)
+    private String getavatar(@RequestParam("bucket") String bucket, @RequestParam("object") String object) throws Exception {
+       
+        //FileInputStream picInput = new FileInputStream(filesUploadPath+username);
+        String presignedObjectUrl=null;
+        Iterable<Result<Item>> listObjects = minioClient.listObjects(ListObjectsArgs.builder()
+                .bucket(bucket)
+                .build());
+        AtomicReference<String> name = new AtomicReference<>("");
+        listObjects.forEach( itemResult -> {
+            try {
+                Item item = itemResult.get();
+                if (item.objectName().contains(object)) {
+                    name.set(item.objectName());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        if(name.get()!=null)
+        {
+             presignedObjectUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+            .bucket("userinfo")
+            .object(object)
+            .expiry(3, TimeUnit.MINUTES)
+            .method(Method.GET)
+            .build());
+       }
+
+        return presignedObjectUrl;
+        //return picInput.readAllBytes();
+    }
+
     @PostMapping("/register")
     public result register(@RequestBody User user) {
         String username = user.getUsername();
@@ -175,15 +220,29 @@ public class usercontroler {
         return result.success(userservice.register(user));
     }
 
-    @RequestMapping
-    public User findAll() {
-        return userservice.findall();
+    @RequestMapping("/findAll")
+    public result findAll(@RequestParam String username) throws Exception{
+        return result.success(userservice.findall(username));
     }
 
-    @DeleteMapping("/{id}")
-    public Integer delete(@PathVariable Integer id) 
-    {
-        return userservice.delete(id);          
+
+
+    @PostMapping("/deletefriend")
+    public result deletefriend(@RequestParam String username, @RequestParam Integer fiendid) throws Exception {
+        userservice.deletefriend(username, fiendid);
+        return result.success();
+    }
+
+    @PostMapping("/addfriend")
+    public result addfriend(@RequestParam String username, @RequestParam Integer fiendid, @RequestParam String friendname) throws Exception {
+        userservice.addfriend(username, fiendid,friendname);
+        return result.success();
+    }
+
+    @PostMapping("/friend/rela")
+    public result friendrela(@RequestParam String username) throws Exception {
+        Map<String,Object>map=userservice.friendrela(username);
+        return result.success(map);
     }
 
     @RequestMapping("/page")
@@ -213,4 +272,6 @@ public class usercontroler {
         }    
         return result.success(userservice.getfriends(username));
     }
+
+
 }
