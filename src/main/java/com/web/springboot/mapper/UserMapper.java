@@ -1,5 +1,6 @@
 package com.web.springboot.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.web.springboot.entity.Blog;
 import com.web.springboot.entity.Friendship;
 import com.web.springboot.entity.User;
 import java.util.List;
@@ -48,4 +49,31 @@ public interface UserMapper {
 
     @Select("select distinct city from blog where username = #{username}")
     List<String> findcitys(String username);
+
+    
+    //new save -syb
+    @Insert("INSERT INTO blog(id,cover,province,city,area,title,date,username) VALUES(#{id},#{cover},#{province},#{city},#{area},#{title},#{date},#{username})")
+    int insert_blog(Blog blog);
+
+    //update cover
+    // @Update("UPDATE blog SET cover=if (#{cover} IS NOT NULL, #{cover}, cover) WHERE Blog_id=#{Blog_id} ")
+    // int update_blog_cover(Blog blog);
+
+    //Insert
+    @Insert("INSERT INTO gallery(username,dsc,src,isediting) VALUES(#{username},#{dsc},#{src},#{isediting})")
+    int insert_gallery(Gallery gallery);
+
+    //update
+    @Update("UPDATE gallery SET dsc=if (#{dsc} IS NOT NULL, #{dsc}, dsc) WHERE (username=#{username} and src=#{src}) ")
+    int update_gallery(Gallery gallery);
+
+    @Update("UPDATE blog SET cover=if (#{cover} IS NOT NULL, #{cover}, cover),id=if (#{id} IS NOT NULL, #{id}, id),username=if (#{username} IS NOT NULL, #{username}, username),province=if (#{province} IS NOT NULL, #{province}, province),city=if (#{city} IS NOT NULL, #{city}, city),area=if (#{area} IS NOT NULL, #{area}, area),title=if (#{title} IS NOT NULL, #{title}, title),date=if (#{date} IS NOT NULL, #{date}, date) WHERE blog_id=#{blog_id} ")
+    int update_blog(Blog blog);
+    //
+    @Select("SELECT * FROM gallery where username = #{username}")
+    List<Gallery> get_gallery_by_username(@Param("username") String username);
+    //
+    @Select("SELECT * FROM blog where blog_id = #{blog_id}")
+    List<Blog> get_blog_by_blog_id(Integer blog_id);
 }
+

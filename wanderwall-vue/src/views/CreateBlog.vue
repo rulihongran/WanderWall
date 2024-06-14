@@ -4,7 +4,7 @@
   <div class="main-container">
     <div class="blog-detail-container" v-if="!isEdit">
       <div class="cover">
-        <img :src="getCover(blog.cover)" :alt="请上传封面" class="blog-cover">
+        <img :src="blog.cover" :alt="请上传封面" class="blog-cover">
       </div>
       <div class="shadow"></div>
       <div class="tag">
@@ -29,7 +29,7 @@
 
     <div class="blog-detail-container" v-if="isEdit">
       <div class="cover">
-        <img :src="getCover(temporaryblog.cover)" :alt="请上传封面" class="blog-cover">
+        <img :src="temporaryblog.cover" :alt="请上传封面" class="blog-cover">
       </div>
       <div class="shadow" style="cursor: pointer;" @click="changecover"></div>
       <div class="tag">
@@ -105,7 +105,7 @@
         <span class="text-title">{{ item.content }}</span><br />
       </template>
       <template v-else-if="item.type === 'image'">
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
+        <img :src="item.src" :alt="item.dsc" class="picture">
         <span class="picture-desc">{{ item.dsc }}</span><br />
       </template>
     </div>
@@ -153,7 +153,7 @@
       </template>
 
       <template v-else-if="item.type === 'image'&& !item.editing">
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture" @click="textedit(index)">
+        <img :src="item.src" :alt="item.dsc" class="picture" @click="textedit(index)">
         <span class="picture-desc" @click="textedit(index)">{{ item.dsc }}</span><br />
       </template>
       <template v-else-if="item.type === 'image'&& item.editing">
@@ -163,7 +163,7 @@
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
+        <img :src="item.src" :alt="item.dsc" class="picture">
         <el-input v-model="item.dsc" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index,0)">在下方插入文本框</el-button>
@@ -189,6 +189,8 @@ export default {
   components: {Header},
   data() {
    return {
+    author: JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",//JSON.parse(localStorage.getItem("user"))
+    username_id: JSON.parse(localStorage.getItem("id"))?JSON.parse(localStorage.getItem("id")):0,
     options: regionData,
     isinsert:false,
     curabove:'',
@@ -197,31 +199,33 @@ export default {
     titleedit: false,
     selectedoptions: ['110000', '110100', '110101'],
     blog: {
-        id: 1,
+        // id: 1,
+        // author_id: JSON.parse(localStorage.getItem("id"))?JSON.parse(localStorage.getItem("id")):1,
         title: '你的题目',
-        author: 'Yunhai',
-        cover: 'cover.png',
-        date: '',
-        province:'',
-        city:'',
-        area:'',
+        // author: JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",//JSON.parse(localStorage.getItem("user"))
+        // cover: 'cover.png',
+        // date: '',
+        // province:'',
+        // city:'',
+        // area:'',
         paragh:[],
     },
     temporaryblog: {
-        id: 1,
+        // id: 1,
         title: '你的题目',
-        author: 'Yunhai',
-        cover: 'cover.png',
-        date: '',
-        province:'',
-        city:'',
-        area:'',
+        // author: 'Yunhai',
+        // cover: 'cover.png',
+        // date: '',
+        // province:'',
+        // city:'',
+        // area:'',
         paragh:[],
     }
     };
   },
   created() {
     this.addtextbox(0,1);
+    this.load();
   },
 
   methods:{
@@ -231,10 +235,19 @@ export default {
       const mm = String(today.getMonth() + 1); // 月份是从0开始的
       const yyyy = today.getFullYear();
 
-      return  mm+'月' + dd + '日 '+ ', '+yyyy
+      return yyyy + '-' + mm + '-' + dd
     },
-    getCover(cover) {
-      return require(`@/assets/blogimage/${cover}`);
+    // getCover(cover) {
+    //   return require(`@/assets/blogimage/${cover}`);
+    // },
+    load() {
+    if(this.blog.id != null){
+      this.$http.get("/user/get_blog/"+toString(this.blog.id)).then(res => {
+          console.log(res);
+          this.blog = (res != undefined)?res:this.blog;
+          console.log(this.blog);
+      });
+    }
     },
     Edit() {
       this.isEdit = !this.isEdit;
@@ -243,7 +256,7 @@ export default {
         this.addtextbox(0, 1);
     },
 
-    Save() {
+    async Save() {
       this.isEdit = !this.isEdit;
       this.temporaryblog.paragh.forEach((item) => {
           item.editing = false;
@@ -251,7 +264,17 @@ export default {
 
       this.titleedit = false;
       this.blog = JSON.parse(JSON.stringify(this.temporaryblog));
+      /*this.blogcopy = this.temporaryblog;*/
       this.blog.date = this.getcurrentdate();
+      //info
+      this.$http({
+        url: '/user/insert/blog',
+        method: 'post',
+        //blog_id:this.data.id,
+        data: { id:this.username_id,cover:this.blog.cover,username:this.author,province:this.blog.province,city:this.blog.city,area:this.blog.area,title:this.blog.title,date:this.blog.date },
+        }).then(res =>  {
+        console.log(res);
+      });
     },
 
     tiedit() {
@@ -281,11 +304,11 @@ export default {
       this.titleedit = false;
       // 将当前段落的 editing 属性设为 true
       this.temporaryblog.paragh[index].editing = true;
-    },
-    deleteitem(index) {
-      this.temporaryblog.paragh.splice(index, 1);
-    },
-    addtextbox(index,above) {
+      },
+      deleteitem(index) {
+        this.temporaryblog.paragh.splice(index, 1);
+      },
+      addtextbox(index,above) {
       // 向 temporaryblog.paragh 数组添加一个新的文本段落
       this.temporaryblog.paragh.forEach((item) => {
           item.editing = false;
@@ -324,7 +347,7 @@ export default {
       this.$refs.fileInput.click();
 
       const handleChangeCallback = () => {
-        return (event) => {
+        return async (event) => {
           let iidex = !this.curabove ? (this.curIndex + 1) : this.curIndex//这个回调里面进行修改要插入的下标
           if (this.isinsert) return//如果已经插入完成就不要进行后面插入  就不会反复插入了
           this.isinsert = true//如果是刚进来  未插入  就修改成true  这样再次进入这个方法的时候  就不会继续插入
@@ -368,7 +391,7 @@ export default {
       this.$refs.fileInput.click();
 
       const handleChangeCoverCallback = () => {
-        return (event) => {
+        return async (event) => {
           let iidex = !this.curabove ? (this.curIndex + 1) : this.curIndex//这个回调里面进行修改要插入的下标
           if (this.isinsert) return//如果已经插入完成就不要进行后面插入  就不会反复插入了
           this.isinsert = true//如果是刚进来  未插入  就修改成true  这样再次进入这个方法的时候  就不会继续插入
@@ -376,6 +399,23 @@ export default {
           const file = event.target.files[0];
           const filename = file.name;
           this.temporaryblog.cover = filename;
+          //transport data
+          const formData = new FormData();
+          formData.append('username', this.author);
+          formData.append('filename', filename);
+          formData.append('file', file);
+          //post
+          await this.$http({
+            url: '/user/upload/blog_cover_pic',
+            method: 'post',
+            data: formData,
+            headers: {'Content-Type': "multipart/form-data"},
+          }).then(res =>  {
+            console.log(res);
+            this.blog.cover = res.data?res.data:this.blog.cover;
+          }
+          );
+          this.temporaryblog.cover = this.blog.cover;
         };
       };
 

@@ -1,5 +1,6 @@
 package com.web.springboot.controler;
 import com.web.springboot.entity.User;
+import com.web.springboot.entity.Blog;
 import com.web.springboot.entity.Friendship;
 import com.web.springboot.entity.graphLinksArray;
 import com.web.springboot.entity.graphNodesArray;
@@ -66,6 +67,10 @@ public class usercontroler {
 
     @Autowired
     private userservice userservice;
+
+    //syb
+    @Value("${minio.endpoint}")
+    private String endpoint;
 
     @Resource
     private MinioClient minioClient;
@@ -273,5 +278,118 @@ public class usercontroler {
         return result.success(userservice.getfriends(username));
     }
 
+    //syb
+    @PostMapping("/upload/blog_pic")
+    public result upload_blog_pic(@RequestParam ("file") MultipartFile  file,@RequestParam("username") String username) throws Exception {
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        long size = file.getSize();
 
+        // 定义一个文件唯一的标识码
+        String fileUUID = IdUtil.fastSimpleUUID()+"_"+"blog_pic"+ StrUtil.DOT + type;
+        String url;
+        File uploadFile = new File(filesUploadPath + fileUUID);
+        // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
+        File parentFile = uploadFile.getParentFile();
+        if(!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        file.transferTo(uploadFile);
+        userservice.upload_blog_pic(filesUploadPath + fileUUID,"userinfo",username+"_"+"blog_pic"+StrUtil.DOT + type);
+        return result.success();
+    }
+
+    //syb
+    @PostMapping("/upload/gallery_pic")
+    public result gallery(@RequestParam ("file") MultipartFile  file,@RequestParam("username") String username,@RequestParam("filename") String filename) throws Exception {
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        // System.out.println(username);
+        // 定义一个文件唯一的标识码
+        String fileUUID = IdUtil.fastSimpleUUID() + "_"+"gallery_pic" + StrUtil.DOT + type;
+        File uploadFile = new File(filesUploadPath + fileUUID);
+        // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
+        File parentFile = uploadFile.getParentFile();
+        if(!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        file.transferTo(uploadFile);
+        userservice.upload_gallery_pic(filesUploadPath + fileUUID,"userinfo",filename + "_"+"gallery_pic" + StrUtil.DOT + type);
+        //need repairing
+        return result.success(endpoint + "/userinfo/" + filename + "_" + "gallery_pic" + StrUtil.DOT + type);
+    }
+    //syb
+    @PostMapping("/update/gallery_info")
+    public result update_user_gallery_info(@RequestBody Gallery gallery) throws Exception {
+        userservice.save_gallery(gallery);
+        System.out.println(gallery);
+        return result.success();
+    }
+
+    //syb
+    @PostMapping("/upload/blog_cover_pic")
+    public result upload_blog_cover_pic(@RequestParam ("file") MultipartFile  file,@RequestParam("username") String username,@RequestParam("filename") String filename) throws Exception {
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        // System.out.println(username);
+        // 定义一个文件唯一的标识码
+        String fileUUID = IdUtil.fastSimpleUUID() + "_"+"blog_cover_pic" + StrUtil.DOT + type;
+        File uploadFile = new File(filesUploadPath + fileUUID);
+        // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
+        File parentFile = uploadFile.getParentFile();
+        if(!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        file.transferTo(uploadFile);
+        userservice.upload_blog_cover_pic(filesUploadPath + fileUUID,"userinfo",filename + "_"+"blog_cover_pic" + StrUtil.DOT + type);
+        //need repairing
+        System.out.println(endpoint + "/userinfo/" + filename + "_" + "blog_cover_pic" + StrUtil.DOT + type);
+        return result.success(endpoint + "/userinfo/" + filename + "_" + "blog_cover_pic" + StrUtil.DOT + type);
+    }
+
+    //syb
+    @PostMapping("/update/blog")
+    public result update_blog(@RequestBody Blog blog) throws Exception {
+        userservice.update_blog(blog);
+        return result.success();
+    }
+
+    //syb
+    @PostMapping("/insert/blog")
+    public result insert_blog(@RequestBody Blog blog) throws Exception {
+        userservice.insert_blog(blog);
+        return result.success();
+    }
+    //syb
+    @RequestMapping(value = "/get_gallery_pic",method = RequestMethod.POST,produces = MediaType.IMAGE_PNG_VALUE)
+    private String get_gallery_Pic(@RequestParam("filename") String filename) throws Exception {
+        filename=userservice.download_gallery("userinfo",filename,filesUploadPath);
+        if(filename.isEmpty())
+        {
+            return null;
+        }
+        
+        //FileInputStream picInput = new FileInputStream(filesUploadPath+username);
+        
+        String presignedObjectUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                .bucket("userinfo")
+                .object(filename + "_gallery_pic")
+                .expiry(3, TimeUnit.MINUTES)
+                .method(Method.GET)
+                .build());
+       
+        return presignedObjectUrl;
+        //return picInput.readAllBytes();
+    }
+    //syb-gallery
+    @GetMapping("/get_gallery/{username}")
+    public List<Gallery> get_gallery(@PathVariable String username) {
+        return userservice.get_gallery_by_username(username);
+    }
+
+    //syb-blog
+    @GetMapping("/get_blog/{blog_id}")
+    public List<Blog> get_blog(@PathVariable Integer blog_id) {
+        return userservice.get_blog_by_blog_id(blog_id);
+    }
 }

@@ -4,7 +4,7 @@
   <div class="main-container">
     <div class="blog-detail-container" v-if="!isEdit">
       <div class="cover">
-        <img :src="getCover(blog.cover)" :alt="请上传封面" class="blog-cover">
+        <img :src="blog.cover" :alt="请上传封面" class="blog-cover">
       </div>
       <div class="shadow"></div>
 
@@ -31,7 +31,7 @@
 
     <div class="blog-detail-container" v-if="isEdit">
       <div class="cover">
-        <img :src="getCover(temporaryblog.cover)" :alt="请上传封面" class="blog-cover" >
+        <img :src="temporaryblog.cover" :alt="请上传封面" class="blog-cover" >
       </div>
       <div class="shadow" style="cursor: pointer;" @click="changecover"></div>
 
@@ -112,7 +112,7 @@
         <span class="text-title">{{ item.content }}</span><br />
       </template>
       <template v-else-if="item.type === 'image'">
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
+        <img :src="item.src" :alt="item.dsc" class="picture">
         <span class="picture-desc">{{ item.dsc }}</span><br />
       </template>
     </div>
@@ -162,7 +162,7 @@
       </template>
 
       <template v-else-if="item.type === 'image' && !item.editing">
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture" @click="textedit(index)">
+        <img :src="item.src" :alt="item.dsc" class="picture" @click="textedit(index)">
         <span class="picture-desc" @click="textedit(index)">{{ item.dsc }}</span><br />
       </template>
       <template v-else-if="item.type === 'image' && item.editing">
@@ -173,7 +173,7 @@
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
-        <img :src="getCover(item.src)" :alt="item.dsc" class="picture">
+        <img :src="item.src" :alt="item.dsc" class="picture">
         <el-input v-model="item.dsc" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
@@ -208,6 +208,8 @@ export default {
   },
   data() {
     return {
+      author: JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",//JSON.parse(localStorage.getItem("user"))
+      username_id: JSON.parse(localStorage.getItem("id"))?JSON.parse(localStorage.getItem("id")):0,
       options: regionData,
       isinsert: false,
       isEdit: false,
@@ -217,167 +219,168 @@ export default {
       temporaryblog: {},
       selectedoptions: ['110000', '110100', '110101'],
       blog: {
-        id: 1,
-        title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives',
-        cover: 'cover.png',
-        author: 'Yunhai',
-        date: '6月1日 , 2023',
-        province:'海南省',
-        city:'三亚市',
-        area:'天涯区',
-        paragh: [
-          {
-            type: 'text',
-            editing: false,
-            content: "Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar."
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: " Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them. Of course, Fulidhoo also has the white sand and clear blue water that's typical of the Maldives, and there are family-owned hotels for as low as $60 USD per night, so it's a good option if you're wanting to get your fix of the tropics without spending a lot of money."
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "This travel guide will explain how to get to Fulidhoo island, what to do there, where to stay, and everything else you need to know before you go!"
-          },
-          {
-            type: 'title',
-            editing: false,
-            content: "Where To Stay In Fulidhoo"
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict4.png',
-            dsc: "Kinan Retreat"
-          },
-          {
-            type: 'title',
-            editing: false,
-            content: "How To Get To Fulidhoo Island"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "There’s no airport in Fulidhoo, so you first have to fly into the capital of the Maldives at Male International Airport (MLE), which is about 55 kilometers (35 miles) from Fulidhoo.\nFrom Male, you can take a speedboat or ferry directly to Fulidhoo."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict1.png',
-            dsc: "Swimming with a stingray in Fulidhoo!"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "The main way to get to Fulidhoo is by public speedboat, and that’s how we went. There are daily departures in the morning and afternoon from Male airport and the city.\nThe speedboat journey to Fulidhoo takes a little less than 1.5 hours and costs about $40 USD per person one way. It was very bumpy in our experience, but I’m sure it depends on the weather.\nOn the bright side, the boats are new and the seats are comfortable. They also have a toilet and plenty of room for storing luggage, and they give you free bottled water during the ride."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict6.png',
-            dsc: "Tour boat looking at the stingrays in Fulidhoo"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "The boats from Male to Fulidhoo depart at 10 AM and 4 PM (Fridays 9:30 AM only). And the boats return from Fulidhoo to Male at 7:30 AM and 1:30 PM (Fridays 7 AM only).\nHowever, keep in mind there are multiple speedboat companies operating this route and the timetable seems to change occasionally, so I’d double check the timetable with your hotel before you go."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict2.png',
-            dsc: "Huvan Inn"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "You can ask your hotel in Fulidhoo to book the speedboat for you, and then pay for it with your room bill when you arrive. That’s what we did, and paying by credit card spared us from having to carry lots of cash everywhere."
-          }
-        ]
+        // id: 1,
+        // username_id: JSON.parse(localStorage.getItem("id"))?JSON.parse(localStorage.getItem("id")):0,
+        // title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives',
+        // cover: 'cover.png',
+        // author: JSON.parse(localStorage.getItem("username"))?JSON.parse(localStorage.getItem("username")):"Suicidal Capybara",//JSON.parse(localStorage.getItem("user"))
+        // date: '2023-6-1',
+        // province:'海南省',
+        // city:'三亚市',
+        // area:'天涯区',
+        // paragh: [
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar."
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: " Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them. Of course, Fulidhoo also has the white sand and clear blue water that's typical of the Maldives, and there are family-owned hotels for as low as $60 USD per night, so it's a good option if you're wanting to get your fix of the tropics without spending a lot of money."
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "This travel guide will explain how to get to Fulidhoo island, what to do there, where to stay, and everything else you need to know before you go!"
+        //   },
+        //   {
+        //     type: 'title',
+        //     editing: false,
+        //     content: "Where To Stay In Fulidhoo"
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict4.png',
+        //     dsc: "Kinan Retreat"
+        //   },
+        //   {
+        //     type: 'title',
+        //     editing: false,
+        //     content: "How To Get To Fulidhoo Island"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "There’s no airport in Fulidhoo, so you first have to fly into the capital of the Maldives at Male International Airport (MLE), which is about 55 kilometers (35 miles) from Fulidhoo.\nFrom Male, you can take a speedboat or ferry directly to Fulidhoo."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict1.png',
+        //     dsc: "Swimming with a stingray in Fulidhoo!"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "The main way to get to Fulidhoo is by public speedboat, and that’s how we went. There are daily departures in the morning and afternoon from Male airport and the city.\nThe speedboat journey to Fulidhoo takes a little less than 1.5 hours and costs about $40 USD per person one way. It was very bumpy in our experience, but I’m sure it depends on the weather.\nOn the bright side, the boats are new and the seats are comfortable. They also have a toilet and plenty of room for storing luggage, and they give you free bottled water during the ride."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict6.png',
+        //     dsc: "Tour boat looking at the stingrays in Fulidhoo"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "The boats from Male to Fulidhoo depart at 10 AM and 4 PM (Fridays 9:30 AM only). And the boats return from Fulidhoo to Male at 7:30 AM and 1:30 PM (Fridays 7 AM only).\nHowever, keep in mind there are multiple speedboat companies operating this route and the timetable seems to change occasionally, so I’d double check the timetable with your hotel before you go."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict2.png',
+        //     dsc: "Huvan Inn"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "You can ask your hotel in Fulidhoo to book the speedboat for you, and then pay for it with your room bill when you arrive. That’s what we did, and paying by credit card spared us from having to carry lots of cash everywhere."
+        //   }
+        // ]
 
       },
       blogcopy: {
-        id: 1,
-        title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives',
-        cover: 'cover.png',
-        author: 'David & Intan',
-        date: '6月1日 , 2023',
-        province:'北京市',
-        city:'市辖区',
-        area:'海淀区',
-        paragh: [
-          {
-            type: 'text',
-            editing: false,
-            content: "Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar."
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: " Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them. Of course, Fulidhoo also has the white sand and clear blue water that's typical of the Maldives, and there are family-owned hotels for as low as $60 USD per night, so it's a good option if you're wanting to get your fix of the tropics without spending a lot of money."
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "This travel guide will explain how to get to Fulidhoo island, what to do there, where to stay, and everything else you need to know before you go!"
-          },
-          {
-            type: 'title',
-            editing: false,
-            content: "Where To Stay In Fulidhoo"
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict4.png',
-            dsc: "Kinan Retreat"
-          },
-          {
-            type: 'title',
-            editing: false,
-            content: "How To Get To Fulidhoo Island"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "There’s no airport in Fulidhoo, so you first have to fly into the capital of the Maldives at Male International Airport (MLE), which is about 55 kilometers (35 miles) from Fulidhoo.\nFrom Male, you can take a speedboat or ferry directly to Fulidhoo."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict1.png',
-            dsc: "Swimming with a stingray in Fulidhoo!"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "The main way to get to Fulidhoo is by public speedboat, and that’s how we went. There are daily departures in the morning and afternoon from Male airport and the city.\nThe speedboat journey to Fulidhoo takes a little less than 1.5 hours and costs about $40 USD per person one way. It was very bumpy in our experience, but I’m sure it depends on the weather.\nOn the bright side, the boats are new and the seats are comfortable. They also have a toilet and plenty of room for storing luggage, and they give you free bottled water during the ride."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict6.png',
-            dsc: "Tour boat looking at the stingrays in Fulidhoo"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "The boats from Male to Fulidhoo depart at 10 AM and 4 PM (Fridays 9:30 AM only). And the boats return from Fulidhoo to Male at 7:30 AM and 1:30 PM (Fridays 7 AM only).\nHowever, keep in mind there are multiple speedboat companies operating this route and the timetable seems to change occasionally, so I’d double check the timetable with your hotel before you go."
-          },
-          {
-            type: 'image',
-            editing: false,
-            src: 'pict2.png',
-            dsc: "Huvan Inn"
-          },
-          {
-            type: 'text',
-            editing: false,
-            content: "You can ask your hotel in Fulidhoo to book the speedboat for you, and then pay for it with your room bill when you arrive. That’s what we did, and paying by credit card spared us from having to carry lots of cash everywhere."
-          }
-        ]
+        // id: 1,
+        // title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives',
+        // cover: 'cover.png',
+        // author: 'David & Intan',
+        // date: '2023-6-1',
+        // province:'北京市',
+        // city:'市辖区',
+        // area:'海淀区',
+        // paragh: [
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar."
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: " Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them. Of course, Fulidhoo also has the white sand and clear blue water that's typical of the Maldives, and there are family-owned hotels for as low as $60 USD per night, so it's a good option if you're wanting to get your fix of the tropics without spending a lot of money."
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "This travel guide will explain how to get to Fulidhoo island, what to do there, where to stay, and everything else you need to know before you go!"
+        //   },
+        //   {
+        //     type: 'title',
+        //     editing: false,
+        //     content: "Where To Stay In Fulidhoo"
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict4.png',
+        //     dsc: "Kinan Retreat"
+        //   },
+        //   {
+        //     type: 'title',
+        //     editing: false,
+        //     content: "How To Get To Fulidhoo Island"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "There’s no airport in Fulidhoo, so you first have to fly into the capital of the Maldives at Male International Airport (MLE), which is about 55 kilometers (35 miles) from Fulidhoo.\nFrom Male, you can take a speedboat or ferry directly to Fulidhoo."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict1.png',
+        //     dsc: "Swimming with a stingray in Fulidhoo!"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "The main way to get to Fulidhoo is by public speedboat, and that’s how we went. There are daily departures in the morning and afternoon from Male airport and the city.\nThe speedboat journey to Fulidhoo takes a little less than 1.5 hours and costs about $40 USD per person one way. It was very bumpy in our experience, but I’m sure it depends on the weather.\nOn the bright side, the boats are new and the seats are comfortable. They also have a toilet and plenty of room for storing luggage, and they give you free bottled water during the ride."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict6.png',
+        //     dsc: "Tour boat looking at the stingrays in Fulidhoo"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "The boats from Male to Fulidhoo depart at 10 AM and 4 PM (Fridays 9:30 AM only). And the boats return from Fulidhoo to Male at 7:30 AM and 1:30 PM (Fridays 7 AM only).\nHowever, keep in mind there are multiple speedboat companies operating this route and the timetable seems to change occasionally, so I’d double check the timetable with your hotel before you go."
+        //   },
+        //   {
+        //     type: 'image',
+        //     editing: false,
+        //     src: 'pict2.png',
+        //     dsc: "Huvan Inn"
+        //   },
+        //   {
+        //     type: 'text',
+        //     editing: false,
+        //     content: "You can ask your hotel in Fulidhoo to book the speedboat for you, and then pay for it with your room bill when you arrive. That’s what we did, and paying by credit card spared us from having to carry lots of cash everywhere."
+        //   }
+        // ]
 
       },
       blogs: [
@@ -414,26 +417,35 @@ export default {
   },
 
   created() {
-
+    this.load();
   },
 
   methods: {
+    load() {
+    if(this.blog.id != null){
+      this.$http.get("/user/get_blog/"+toString(this.blog.id)).then(res => {
+          console.log(res);
+          this.blog = (res != undefined)?res:this.blog;
+          console.log(this.blog);
+      });
+    }
+    },
     getcurrentdate() {
       const today = new Date();
       const dd = String(today.getDate());
       const mm = String(today.getMonth() + 1); // 月份是从0开始的
       const yyyy = today.getFullYear();
 
-      return  mm+'月' + dd + '日 '+ ', '+yyyy
+      return today
     },
-    getCover(cover) {
-      return require(`@/assets/blogimage/${cover}`);
-    },
+    // getCover(cover) {
+    //   return require(`@/assets/blogimage/${cover}`);
+    // },
     Edit() {
       this.isEdit = !this.isEdit;
       this.temporaryblog = JSON.parse(JSON.stringify(this.blog));
     },
-    Save() {
+    async Save() {
       this.isEdit = !this.isEdit;
       this.temporaryblog.paragh.forEach((item) => {
           item.editing = false;
@@ -443,6 +455,31 @@ export default {
       this.blog = JSON.parse(JSON.stringify(this.temporaryblog));
       /*this.blogcopy = this.temporaryblog;*/
       this.blog.date = this.getcurrentdate();
+      //transport data
+      const formData = new FormData();
+      formData.append('username', this.author);
+      formData.append('filename', filename);
+      formData.append('file', file);
+      //post
+      await this.$http({
+        url: '/user/update/blog_cover_pic',
+        method: 'post',
+        data: formData,
+        headers: {'Content-Type': "multipart/form-data"},
+        }).then(res =>  {
+          console.log(res);
+          this.blog.cover = res.data?res.data:this.blog.cover;
+        }
+      );
+      //info
+      this.$http({
+        url: '/user/update/blog',
+        method: 'post',
+        //blog_id:this.data.id,
+        data: { id:this.username_id,cover:this.blog.cover,username:this.author,province:this.blog.province,city:this.blog.city,area:this.blog.area,title:this.blog.title,date:this.blog.date },
+        }).then(res =>  {
+        console.log(res);
+      });
     },
 
     Reset() {
@@ -596,7 +633,7 @@ export default {
       this.$refs.fileInput.click();
 
       const handleChangeCoverCallback = () => {
-        return (event) => {
+        return async (event) => {
           let iidex = !this.curabove ? (this.curIndex + 1) : this.curIndex//这个回调里面进行修改要插入的下标
           if (this.isinsert) return//如果已经插入完成就不要进行后面插入  就不会反复插入了
           this.isinsert = true//如果是刚进来  未插入  就修改成true  这样再次进入这个方法的时候  就不会继续插入
@@ -604,6 +641,23 @@ export default {
           const file = event.target.files[0];
           const filename = file.name;
           this.temporaryblog.cover = filename;
+          //transport data
+          const formData = new FormData();
+          formData.append('username', this.author);
+          formData.append('filename', filename);
+          formData.append('file', file);
+          //post
+          await this.$http({
+            url: '/user/upload/blog_cover_pic',
+            method: 'post',
+            data: formData,
+            headers: {'Content-Type': "multipart/form-data"},
+          }).then(res =>  {
+            console.log(res);
+            this.blog.cover = res.data?res.data:this.blog.cover;
+          }
+          );
+          this.temporaryblog.cover = this.blog.cover;
         };
       };
 
@@ -612,8 +666,6 @@ export default {
 
       // 使用相同的回调函数来移除监听器
       this.$refs.fileInput.removeEventListener('change', handleChangeCoverCallback());
-
-
     },
   }
 };

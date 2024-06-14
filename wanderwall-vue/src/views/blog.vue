@@ -22,7 +22,7 @@
     <div class="blog-grid">
       <div v-for="(blog, index) in paginatedBlogs" :key="index" class="blog-item">
       <router-link :to="{ name: 'blog-detail', params: { id: blog.id } }" class="router-link-custom">
-        <img :src="getCover(blog.cover)" :alt="blog.title" class="blog-cover">
+        <img :src="blog.cover" :alt="blog.title" class="blog-cover">
         <h2 class="blog-title">{{ blog.title }}</h2>
         <div class="divider"></div>
         <p class="blog-description">{{ blog.content }}</p>
@@ -79,9 +79,9 @@ export default {
 
   },
   methods:{
-    getCover(cover) {
-      return require(`@/assets/images/${cover}`);
-    },
+    // getCover(cover) {
+    //   return require(`@/assets/images/${cover}`);
+    // },
     prevpage() {
       if (this.currentPage > 1) {
         this.currentPage--;
