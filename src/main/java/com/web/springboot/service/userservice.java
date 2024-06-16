@@ -27,7 +27,9 @@ import jakarta.annotation.Resource;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.web.springboot.common.Constants;
 import com.web.springboot.controler.dto.userdto;
+import com.web.springboot.entity.Blog;
 import com.web.springboot.entity.Friendship;
+import com.web.springboot.entity.Gallery;
 import com.web.springboot.entity.User;
 import com.web.springboot.entity.graphLinksArray;
 import com.web.springboot.entity.graphNodesArray;
@@ -240,4 +242,102 @@ public class userservice {
         map.put("links", m2);
         return map;
     } 
+    //syb
+    public ObjectWriteResponse upload_blog_pic(String file_url, String bucketName, String objectName)throws Exception
+    {
+        File file = new File(file_url);
+        ObjectWriteResponse objectWriteResponse = minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .stream(new FileInputStream(file), file.length(), -1)
+                .build()
+        );
+        return objectWriteResponse;
+    }
+
+    //syb
+    public ObjectWriteResponse upload_gallery_pic(String file_url, String bucketName, String objectName)throws Exception
+    {
+        File file = new File(file_url);
+        ObjectWriteResponse objectWriteResponse = minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .stream(new FileInputStream(file), file.length(), -1)
+                .build()
+        );
+        return objectWriteResponse;
+    }
+
+    //syb
+    public ObjectWriteResponse upload_blog_cover_pic(String file_url, String bucketName, String objectName)throws Exception
+    {
+        File file = new File(file_url);
+        ObjectWriteResponse objectWriteResponse = minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .stream(new FileInputStream(file), file.length(), -1)
+                .build()
+        );
+        return objectWriteResponse;
+    }
+
+    //syb
+    public int insert_blog(Blog blog)
+    {
+        return usermapper.insert_blog(blog);
+    }
+
+    //syb
+    public int save_gallery(Gallery gallery)
+    {
+        // if (gallery.getSrc() == null) {
+        return usermapper.insert_gallery(gallery);
+        // } else{
+        //     return usermapper.update_gallery(gallery);
+        // }
+        
+    }
+
+    //syb
+    public int update_blog(Blog blog)
+    {
+        return usermapper.update_blog(blog);
+    }
+
+    public String download_gallery(String bucketName,String objectName,String filesUploadPath) throws Exception {
+        Iterable<Result<Item>> listObjects = minioClient.listObjects(ListObjectsArgs.builder()
+                .bucket(bucketName)
+                .build());
+        AtomicReference<String> name = new AtomicReference<>("");
+        listObjects.forEach( itemResult -> {
+            try {
+                Item item = itemResult.get();
+                if (item.objectName().contains(objectName)) {
+                    name.set(item.objectName());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        if(name.get()!=null)
+        {
+        File file = new File(filesUploadPath + "/" + name.get());
+        if (!file.exists()) {
+        minioClient.downloadObject(DownloadObjectArgs.builder()
+            .bucket(bucketName)
+            .object(name.get())
+            .filename(filesUploadPath + "/" + name.get())
+            .build());
+        }
+        }
+        return name.get();
+    }
+    //syb
+    public List<Gallery> get_gallery_by_username(String username) {
+        return usermapper.get_gallery_by_username(username);
+    }
+    //syb
+    public List<Blog> get_blog_by_blog_id(Integer blog_id) {
+        return usermapper.get_blog_by_blog_id(blog_id);
+    }
 }
