@@ -70,6 +70,7 @@
 
 <script>
 import Header from "@/components/Header";
+import request from "@/utils/request";
 
 export default {
   name: "Gallery",
@@ -152,6 +153,7 @@ export default {
     Save() {
       this.isEdit = !this.isEdit;
       this.images = JSON.parse(JSON.stringify(this.temporaryimages));
+      this.load();
     },
     Reset() {
       this.temporaryimages.forEach((item) => {
@@ -163,8 +165,14 @@ export default {
 
     },
     Delete(index) {
-      this.temporaryimages.splice(index, 1);
-      this.imgList.splice(index, 1);
+      request.post('/user/deleteGallery', {src:this.temporaryimages[index].src})
+          .then(response => {
+            this.temporaryimages.splice(index, 1);
+            this.imgList.splice(index, 1);
+          })
+          .catch(error => {
+            console.error('数据请求失败:', error);
+          });
     },
     imgedit(index) {
       console.log("image edit:",this.images,index);//加上这个
@@ -174,7 +182,7 @@ export default {
       });
       console.log(this.images)
       console.log(index)
-      this.images[index - 1].isediting = true;
+      this.images[index].isediting = true;
     },
     imgchange(index) {
       this.curIndex = index,

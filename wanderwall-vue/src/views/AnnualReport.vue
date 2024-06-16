@@ -22,8 +22,8 @@
       <div id="report-container">
         <div class="right-text-overlay">
           <p class="right-text-p">这一年<br>
-            你一共去了<span class="highlight">{{city_num}}</span>个城市<br>
-            超过了<span class="highlight">{{exceed_friend_rate}}</span>的好友
+            你一共去了<span class="highlight">{{city_num}}</span>个城市
+<!--            <br>超过了<span class="highlight">{{exceed_friend_rate}}</span>的好友-->
           </p>
 
           <p class="right-text-p">你旅行目的地偏好<span class="highlight">{{fav_area}}</span><br>
@@ -36,21 +36,21 @@
       </div>
     </swiper-slide>
     <!--Page 2-->
-    <swiper-slide>
-      <div id="report-container">
-        <div class="left-text-overlay">
-          <p class="left-text-p">你最长时间的一次旅行持续<span class="highlight">{{longest_travel.day_num}}</span>天<br>
-            在去年<span class="highlight">{{longest_travel.month}}</span>月份<br>
-            你从<span class="highlight">{{longest_travel.route}}</span><br>
-            足足去了<span class="highlight">{{longest_travel.city_num}}</span>个城市<br>
-            这一定是一段很难忘的记忆吧
-          </p>
-        </div>
-        <video class="custom-video" autoplay muted loop>
-          <source src="../assets/report/page2.mp4" type="video/mp4">
-        </video>
-      </div>
-    </swiper-slide>
+<!--    <swiper-slide>-->
+<!--      <div id="report-container">-->
+<!--        <div class="left-text-overlay">-->
+<!--          <p class="left-text-p">你最长时间的一次旅行持续<span class="highlight">{{longest_travel.day_num}}</span>天<br>-->
+<!--            在<span class="highlight">{{longest_travel.month}}</span>月份<br>-->
+<!--            你从<span class="highlight">{{longest_travel.route}}</span><br>-->
+<!--            足足去了<span class="highlight">{{longest_travel.city_num}}</span>个城市<br>-->
+<!--            这一定是一段很难忘的记忆吧-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <video class="custom-video" autoplay muted loop>-->
+<!--          <source src="../assets/report/page2.mp4" type="video/mp4">-->
+<!--        </video>-->
+<!--      </div>-->
+<!--    </swiper-slide>-->
     <!--Page 3-->
     <swiper-slide>
       <div id="report-container">
@@ -69,27 +69,27 @@
       </div>
     </swiper-slide>
     <!--Page 4-->
-    <swiper-slide>
-      <div id="report-container">
-        <div class="center-text-overlay">
-          <p class="center-text-p">
-            {{year}}<br>
-            你的旅行Blog里出现得最多的词是<br>
-            <span class="highlight" style="font-size: 36px">{{blog_preference.word}}</span><br>
-            频率高达<span class="highlight" style="font-size: 24px">{{blog_preference.freq}}</span>次
-          </p>
-        </div>
-        <div class="left-text-overlay">
-          <p class="left-text-p" v-for="(item, index) in blog_preference.contentWithDate" :key="index">
-            <span v-html="highlightWord(item.content, blog_preference.word)"></span> <br>
-            -- {{ item.date }}
-          </p>
-        </div>
-        <video class="custom-video" autoplay muted loop>
-          <source src="../assets/report/page4.mp4" type="video/mp4">
-        </video>
-      </div>
-    </swiper-slide>
+<!--    <swiper-slide>-->
+<!--      <div id="report-container">-->
+<!--        <div class="center-text-overlay">-->
+<!--          <p class="center-text-p">-->
+<!--            {{year}}<br>-->
+<!--            你的旅行Blog里出现得最多的词是<br>-->
+<!--            <span class="highlight" style="font-size: 36px">{{blog_preference.word}}</span><br>-->
+<!--            频率高达<span class="highlight" style="font-size: 24px">{{blog_preference.freq}}</span>次-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <div class="left-text-overlay">-->
+<!--          <p class="left-text-p" v-for="(item, index) in blog_preference.contentWithDate" :key="index">-->
+<!--            <span v-html="highlightWord(item.content, blog_preference.word)"></span> <br>-->
+<!--            &#45;&#45; {{ item.date }}-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <video class="custom-video" autoplay muted loop>-->
+<!--          <source src="../assets/report/page4.mp4" type="video/mp4">-->
+<!--        </video>-->
+<!--      </div>-->
+<!--    </swiper-slide>-->
     <!--Page 45-->
     <swiper-slide>
       <div id="report-container">
@@ -97,7 +97,9 @@
           <p class="left-text-p">
             {{special_travel.date}}<span class="highlight">{{special_travel.city}}</span><br>
             大概是很特别的一次旅行吧<br>
-            你足足发了<span class="highlight">{{special_travel.blog_num}}</span>条Blog，<span class="highlight">{{special_travel.pic_num}}</span>张照片<br>
+            你足足发了<span class="highlight">{{special_travel.blog_num}}</span>条Blog
+<!--            ，<span class="highlight">{{special_travel.pic_num}}</span>张照片-->
+            <br>
             遇见了什么让你这么开心呢
           </p>
         </div>
@@ -116,6 +118,7 @@ import Header from "@/components/Header";
 import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper.min.css";
+import request from "@/utils/request";
 // import "swiper/modules/pagination/pagination.min.css";
 
 export default {
@@ -148,6 +151,19 @@ export default {
         pic_num:20
       }
     }
+  },
+  mounted() {
+    request.post('/user/getReport', {})
+        .then(response => {
+          this.year=response.year;
+          this.city_num=response.city_num;
+          this.fav_area=response.fav_area;
+          this.common_city=response.common_city;
+          this.special_travel=response.special_travel;
+        })
+        .catch(error => {
+          console.error('数据请求失败:', error);
+        });
   },
   methods: {
     highlightWord(content, word) {

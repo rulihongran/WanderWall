@@ -7,12 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import cn.hutool.core.bean.BeanUtil;
 
+import com.web.springboot.common.MapCpConstants;
+import com.web.springboot.entity.*;
+import com.web.springboot.entity.vo.MapByProvinceVO;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.web.springboot.mapper.UserMapper;
@@ -27,12 +33,6 @@ import jakarta.annotation.Resource;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.web.springboot.common.Constants;
 import com.web.springboot.controler.dto.userdto;
-import com.web.springboot.entity.Blog;
-import com.web.springboot.entity.Friendship;
-import com.web.springboot.entity.Gallery;
-import com.web.springboot.entity.User;
-import com.web.springboot.entity.graphLinksArray;
-import com.web.springboot.entity.graphNodesArray;
 import com.web.springboot.exception.ServiceException;
 
 @Service
@@ -191,10 +191,11 @@ public class userservice {
        usermapper.delete(username,friendid);  
     }
 
-    public void addfriend (String username,Integer friendid,String friendname)throws Exception
+    public void addfriend (Integer userid,String username,Integer friendid,String friendname)throws Exception
     {
         Friendship friendship = new Friendship();
         friendship.setUsername(username);
+        friendship.setUserid(userid);
         friendship.setFriend_id(friendid);;
         friendship.setFriend_username(friendname);
         usermapper.addfriend(friendship);
@@ -221,6 +222,9 @@ public class userservice {
         for (graphNodesArray value : m1.values()) {  
             List<String> citys = usermapper.findcitys(value.getName());
             for (String city : citys) {
+                if (StringUtils.isBlank(city)){
+                    continue;
+                }
                 if (!cityList.contains(city)) {
                     cityList.add(city);
                 }
@@ -230,8 +234,11 @@ public class userservice {
                 g3.setRela("去过");
                 m2.add(g3);
             }
-            }
+        }
         for (String city : cityList) {
+            if (StringUtils.isBlank(city)){
+                continue;
+            }
             graphNodesArray g4 = new graphNodesArray();
             g4.setName(city);
             g4.setType("City");
@@ -282,9 +289,21 @@ public class userservice {
     }
 
     //syb
+    @Transactional
     public int insert_blog(Blog blog)
     {
-        return usermapper.insert_blog(blog);
+        //如果是直辖市，第二级也存第三级
+        if (MapCpConstants.city.contains(blog.getProvince())){
+            blog.setCity(blog.getArea());
+        }
+        int i = usermapper.insert_blog(blog);
+        //保存内容
+        List<Blog_content> paragh = blog.getParagh();
+        for (Blog_content blog_content : paragh) {
+            blog_content.setBlog_id(blog.getBlog_id());
+            usermapper.insert_blog_content(blog_content);
+        }
+        return i;
     }
 
     //syb
@@ -298,10 +317,42 @@ public class userservice {
         
     }
 
+    public int deleteGallery(String src)
+    {
+         if (src == null) {
+             return 0;
+         }
+        return usermapper.delete_gallery(src);
+    }
+
     //syb
+    @Transactional
     public int update_blog(Blog blog)
     {
+        if (blog.getBlog_id()==null)
+            return 0;
+        //保存内容，先删再存
+        usermapper.delete_blog_content(blog.getBlog_id());
+        List<Blog_content> paragh = blog.getParagh();
+        for (Blog_content blog_content : paragh) {
+            blog_content.setBlog_id(blog.getBlog_id());
+            usermapper.insert_blog_content(blog_content);
+        }
+        //如果是直辖市，第二级也存第三级
+        if (MapCpConstants.city.contains(blog.getProvince())){
+            blog.setCity(blog.getArea());
+        }
+
         return usermapper.update_blog(blog);
+    }
+
+    @Transactional
+    public int delete_blog(Integer id)
+    {
+        if (id==null)
+            return 0;
+        usermapper.delete_blog_content(id);
+        return usermapper.delete_blog(id);
     }
 
     public String download_gallery(String bucketName,String objectName,String filesUploadPath) throws Exception {
@@ -337,7 +388,37 @@ public class userservice {
         return usermapper.get_gallery_by_username(username);
     }
     //syb
-    public List<Blog> get_blog_by_blog_id(Integer blog_id) {
-        return usermapper.get_blog_by_blog_id(blog_id);
+    public Blog get_blog_by_blog_id(Integer blog_id) {
+        Blog blog = usermapper.get_blog_by_blog_id(blog_id);
+        if (blog!=null){
+            List<Blog_content> blog_content = usermapper.get_blog_content(blog_id);
+            blog.setParagh(blog_content);
+        }
+        return blog;
+    }
+    public List<Blog> get_blog_by_user(Integer userId) {
+        List<Blog> blog_by_user = usermapper.get_blog_by_user(userId);
+        for (Blog blog : blog_by_user) {
+            List<Blog_content> blog_content = usermapper.get_blog_content(blog.getBlog_id());
+            String collect = blog_content.stream().map(Blog_content::getContent).collect(Collectors.joining("；"));
+            blog.setContent(collect);
+        }
+        return blog_by_user;
+    }
+
+    public List<MapByProvinceVO> getMapByProvince(Integer userId, String province,String time,String location) {
+        return usermapper.getMapByProvince(userId,province,time,location);
+    }
+
+    public List<MapByProvinceVO> getMapByUser(Integer userId,String time,String location) {
+        return usermapper.getMapByUser(userId,time,location);
+    }
+
+    public List<Friendship> getFriendship(Integer userId) {
+        return usermapper.getFriendship(userId);
+    }
+
+    public MapByProvinceVO getReport(Integer userId,String time){
+        return usermapper.getReport(userId,time);
     }
 }

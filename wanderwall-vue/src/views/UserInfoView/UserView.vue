@@ -89,7 +89,7 @@ import { data } from "jquery";
       currentTime: '',
 
       tabs: [
-        { name: '故事', link: 'work' },
+        // { name: '故事', link: 'work' },
         { name: '好友', link: 'friend' },
         { name: '推荐', link: 'addfriend' },
       ],

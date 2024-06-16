@@ -92,9 +92,9 @@
           <el-button class="black-button" @click="addtextbox(this.temporaryblog.paragh.length, 1)"><el-icon>
               <ChatLineSquare />
             </el-icon>添加文本框</el-button>
-          <el-button class="black-button" @click="addimage(this.temporaryblog.paragh.length, 1)"><el-icon>
-              <Picture />
-            </el-icon>添加图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(this.temporaryblog.paragh.length, 1)"><el-icon>-->
+<!--              <Picture />-->
+<!--            </el-icon>添加图片</el-button>-->
         </el-button-group>
       </div>
       <div style="flex:1; text-align:left">
@@ -123,7 +123,7 @@
         <el-button-group class="button">
           <el-button class="black-button" style="" @click="addtextbox(index, 1)">在上方插入文本框</el-button>
           <el-button class="black-button" style="" @click="addtitle(index, 1)">在上方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
@@ -131,8 +131,7 @@
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br />
       </template>
@@ -144,7 +143,7 @@
         <el-button-group class="button">
           <el-button class="black-button" style="" @click="addtextbox(index, 1)">在上方插入文本框</el-button>
           <el-button class="black-button" style="" @click="addtitle(index, 1)">在上方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
@@ -152,8 +151,7 @@
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br />
       </template>
@@ -169,7 +167,7 @@
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 1)">在上方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 1)">在上方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
@@ -178,8 +176,7 @@
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br /><br />
       </template>
@@ -385,31 +382,31 @@ export default {
       },
       blogs: [
         // 假设的博客数据
-        {
-          id: 1, title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives', cover: 'cover1.png',
-          content: 'Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them.'
-        },
-        {
-          id: 2, title: 'How To Visit Dhigurah Island: Budget Paradise In Maldives', cover: 'cover2.png',
-          content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
-        },
-        {
-          id: 3, title: '10 Best Hikes In Aruba: Family Friendly Trails', cover: 'cover3.png',
-          content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
-        },
-
-        {
-          id: 4, title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives', cover: 'cover3.png',
-          content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
-        },
-        {
-          id: 5, title: 'How To Visit Dhigurah Island: Budget Paradise In Maldives', cover: 'cover2.png',
-          content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
-        },
-        {
-          id: 6, title: '10 Best Hikes In Aruba: Family Friendly Trails', cover: 'cover1.png',
-          content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
-        },
+        // {
+        //   id: 1, title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives', cover: 'cover1.png',
+        //   content: 'Aside from scuba diving, the prime attraction in Fulidhoo is the shark and stingray beach, where you can see nurse sharks, sea turtles, and stingrays in the shallow water and even get your picture taken with them.'
+        // },
+        // {
+        //   id: 2, title: 'How To Visit Dhigurah Island: Budget Paradise In Maldives', cover: 'cover2.png',
+        //   content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
+        // },
+        // {
+        //   id: 3, title: '10 Best Hikes In Aruba: Family Friendly Trails', cover: 'cover3.png',
+        //   content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
+        // },
+        //
+        // {
+        //   id: 4, title: 'Fulidhoo Island Guide: Shark & Stingray Beach In Maldives', cover: 'cover3.png',
+        //   content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
+        // },
+        // {
+        //   id: 5, title: 'How To Visit Dhigurah Island: Budget Paradise In Maldives', cover: 'cover2.png',
+        //   content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
+        // },
+        // {
+        //   id: 6, title: '10 Best Hikes In Aruba: Family Friendly Trails', cover: 'cover1.png',
+        //   content: 'Fulidhoo is a small, budget-friendly local island we visited recently in the Maldives, along with Dhigurah island, which we loved for its beaches and sandbar.'
+        // },
         // 更多博客...
       ],
      
@@ -422,13 +419,13 @@ export default {
 
   methods: {
     load() {
-    if(this.blog.id != null){
-      this.$http.get("/user/get_blog/"+toString(this.blog.id)).then(res => {
-          console.log(res);
-          this.blog = (res != undefined)?res:this.blog;
-          console.log(this.blog);
+      this.blog.blogId = this.$route.params.id
+      this.$http.get("/user/get_blog/"+this.blog.blogId).then(res => {
+        console.log(res);
+        this.blog = (res != undefined)?res:this.blog;
+        this.temporaryblog=this.blog;
+        console.log(this.blog);
       });
-    }
     },
     getcurrentdate() {
       const today = new Date();
@@ -436,7 +433,7 @@ export default {
       const mm = String(today.getMonth() + 1); // 月份是从0开始的
       const yyyy = today.getFullYear();
 
-      return today
+      return yyyy + '-' + mm + '-' + dd
     },
     // getCover(cover) {
     //   return require(`@/assets/blogimage/${cover}`);
@@ -456,29 +453,38 @@ export default {
       /*this.blogcopy = this.temporaryblog;*/
       this.blog.date = this.getcurrentdate();
       //transport data
-      const formData = new FormData();
-      formData.append('username', this.author);
-      formData.append('filename', filename);
-      formData.append('file', file);
-      //post
-      await this.$http({
-        url: '/user/update/blog_cover_pic',
-        method: 'post',
-        data: formData,
-        headers: {'Content-Type': "multipart/form-data"},
-        }).then(res =>  {
-          console.log(res);
-          this.blog.cover = res.data?res.data:this.blog.cover;
-        }
-      );
+      // const formData = new FormData();
+      // formData.append('username', this.author);
+      // formData.append('filename', filename);
+      // formData.append('file', file);
+      // //post
+      // await this.$http({
+      //   url: '/user/update/blog_cover_pic',
+      //   method: 'post',
+      //   data: formData,
+      //   headers: {'Content-Type': "multipart/form-data"},
+      //   }).then(res =>  {
+      //     console.log(res);
+      //     this.blog.cover = res.data?res.data:this.blog.cover;
+      //   }
+      // );
       //info
       this.$http({
         url: '/user/update/blog',
         method: 'post',
         //blog_id:this.data.id,
-        data: { id:this.username_id,cover:this.blog.cover,username:this.author,province:this.blog.province,city:this.blog.city,area:this.blog.area,title:this.blog.title,date:this.blog.date },
+        data: this.blog,
         }).then(res =>  {
         console.log(res);
+      });
+    },
+    async Delete() {
+      this.$http({
+        url: '/user/delete_blog/'+this.blog.blog_id,
+        method: 'get'
+      }).then(res =>  {
+        console.log(res);
+        this.$router.go(-1);
       });
     },
 

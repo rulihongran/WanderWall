@@ -85,9 +85,9 @@
           <el-button class="black-button" @click="addtextbox(this.temporaryblog.paragh.length, 1)"><el-icon>
               <ChatLineSquare />
             </el-icon>添加文本框</el-button>
-          <el-button class="black-button" @click="addimage(this.temporaryblog.paragh.length, 1)"><el-icon>
-              <Picture />
-            </el-icon>添加图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(this.temporaryblog.paragh.length, 1)"><el-icon>-->
+<!--              <Picture />-->
+<!--            </el-icon>添加图片</el-button>-->
         </el-button-group>
       </div>
       <div style="flex:1; text-align:left">
@@ -115,15 +115,14 @@
       <template v-if="item.type === 'text'&& item.editing">
         <el-button-group class="button">
           <el-button class="black-button" style="" @click="addtextbox(index,1)">在上方插入文本框</el-button>
-          <el-button class="black-button" @click="addimage(index,1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index,1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
         <el-input v-model="item.content" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index,0)">在下方插入文本框</el-button>
-          <el-button class="black-button" @click="addimage(index,0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index,0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br />
       </template>
@@ -135,7 +134,7 @@
         <el-button-group class="button">
           <el-button class="black-button" style="" @click="addtextbox(index, 1)">在上方插入文本框</el-button>
           <el-button class="black-button" style="" @click="addtitle(index, 1)">在上方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
@@ -143,8 +142,7 @@
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index, 0)">在下方插入文本框</el-button>
           <el-button class="black-button" @click="addtitle(index, 0)">在下方插入文本标题</el-button>
-          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index, 0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br />
       </template>
@@ -159,7 +157,7 @@
       <template v-else-if="item.type === 'image'&& item.editing">
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index,1)">在上方插入文本框</el-button>
-          <el-button class="black-button" @click="addimage(index,1)">在上方插入图片</el-button>
+<!--          <el-button class="black-button" @click="addimage(index,1)">在上方插入图片</el-button>-->
           <el-button class="black-button" @click="deleteitem(index)">删除此元素
           </el-button>
         </el-button-group>
@@ -167,8 +165,7 @@
         <el-input v-model="item.dsc" class="blog-text" autosize type="textarea"></el-input>
         <el-button-group class="button">
           <el-button class="black-button" @click="addtextbox(index,0)">在下方插入文本框</el-button>
-          <el-button class="black-button" @click="addimage(index,0)">在下方插入图片
-          </el-button>
+<!--          <el-button class="black-button" @click="addimage(index,0)">在下方插入图片</el-button>-->
         </el-button-group>
         <br />
       </template>
@@ -241,13 +238,13 @@ export default {
     //   return require(`@/assets/blogimage/${cover}`);
     // },
     load() {
-    if(this.blog.id != null){
-      this.$http.get("/user/get_blog/"+toString(this.blog.id)).then(res => {
-          console.log(res);
-          this.blog = (res != undefined)?res:this.blog;
-          console.log(this.blog);
-      });
-    }
+      if(this.blog.id != null){
+        this.$http.get("/user/get_blog/"+toString(this.blog.id)).then(res => {
+            console.log(res);
+            this.blog = (res != undefined)?res:this.blog;
+            console.log(this.blog);
+        });
+      }
     },
     Edit() {
       this.isEdit = !this.isEdit;
@@ -263,15 +260,14 @@ export default {
       });
 
       this.titleedit = false;
-      this.blog = JSON.parse(JSON.stringify(this.temporaryblog));
-      /*this.blogcopy = this.temporaryblog;*/
+      this.blog = this.temporaryblog;
       this.blog.date = this.getcurrentdate();
       //info
       this.$http({
         url: '/user/insert/blog',
         method: 'post',
         //blog_id:this.data.id,
-        data: { id:this.username_id,cover:this.blog.cover,username:this.author,province:this.blog.province,city:this.blog.city,area:this.blog.area,title:this.blog.title,date:this.blog.date },
+        data: this.blog,
         }).then(res =>  {
         console.log(res);
       });
@@ -304,11 +300,11 @@ export default {
       this.titleedit = false;
       // 将当前段落的 editing 属性设为 true
       this.temporaryblog.paragh[index].editing = true;
-      },
-      deleteitem(index) {
-        this.temporaryblog.paragh.splice(index, 1);
-      },
-      addtextbox(index,above) {
+    },
+    deleteitem(index) {
+      this.temporaryblog.paragh.splice(index, 1);
+    },
+    addtextbox(index,above) {
       // 向 temporaryblog.paragh 数组添加一个新的文本段落
       this.temporaryblog.paragh.forEach((item) => {
           item.editing = false;
@@ -411,9 +407,9 @@ export default {
             data: formData,
             headers: {'Content-Type': "multipart/form-data"},
           }).then(res =>  {
-            console.log(res);
-            this.blog.cover = res.data?res.data:this.blog.cover;
-          }
+              console.log(res);
+              this.blog.cover = res.data?res.data:this.blog.cover;
+            }
           );
           this.temporaryblog.cover = this.blog.cover;
         };

@@ -15,5 +15,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.config.globalProperties.$http = request
 
-axios.defaults.baseURL = 'http://127.0.0.1:4523';
+axios.defaults.baseURL = 'http://127.0.0.1:9090';
 app.mount('#app')

@@ -28,13 +28,13 @@
               <i class="el-icon-user"></i>
               <span >个人简介</span>
             </el-menu-item>
-            <el-menu-item
-              index="myarticle"
-              :route="{ name: 'myarticle', params: $route.params.id }"
-            >
-              <i class="el-icon-edit-outline"></i>
-              <span >发帖</span>
-            </el-menu-item>
+<!--            <el-menu-item-->
+<!--              index="myarticle"-->
+<!--              :route="{ name: 'myarticle', params: $route.params.id }"-->
+<!--            >-->
+<!--              <i class="el-icon-edit-outline"></i>-->
+<!--              <span >发帖</span>-->
+<!--            </el-menu-item>-->
           </el-menu>
         </el-card>
      

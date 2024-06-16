@@ -15,23 +15,23 @@
             <el-form-item prop="confirmpass">
               <el-input class="custom-input" prefix-icon="lock" size="large" show-password placeholder="请确认密码" v-model="user.confirmpass" clearable></el-input>
             </el-form-item>
-            <el-form :model="user" :rules="specialrule" ref="verifyref">
+            <!-- <el-form :model="user" :rules="specialrule" ref="verifyref">
               <el-form-item prop="email">
                 <el-input class="custom-input" prefix-icon="message" size="large" placeholder="请输入邮箱" v-model="user.email" clearable></el-input>
               </el-form-item>
-            </el-form>
-            <div style="flex: 1; display: flex;">
-              <div style="flex: 1;">
-                <el-form-item prop="code">
-                  <el-input class="custom-input" prefix-icon="chat-dot-round" size="large" placeholder="输入验证码" v-model="user.code" clearable></el-input>
-                </el-form-item>
-              </div>
-              <div style="flex: 1;text-align: right;">
-                <el-form-item>
-                  <el-button type="primary" style="width: 90%;height: 56px;background-color:#5f9592" @click="verify">获取验证码</el-button>
-                </el-form-item>
-              </div>
-            </div>
+            </el-form> -->
+<!--            <div style="flex: 1; display: flex;">-->
+<!--              <div style="flex: 1;">-->
+<!--                <el-form-item prop="code">-->
+<!--                  <el-input class="custom-input" prefix-icon="chat-dot-round" size="large" placeholder="输入验证码" v-model="user.code" clearable></el-input>-->
+<!--                </el-form-item>-->
+<!--              </div>-->
+<!--              <div style="flex: 1;text-align: right;">-->
+<!--                <el-form-item>-->
+<!--                  <el-button type="primary" style="width: 90%;height: 56px;background-color:#5f9592" @click="verify">获取验证码</el-button>-->
+<!--                </el-form-item>-->
+<!--              </div>-->
+<!--            </div>-->
             <el-form-item>
               <el-button type="primary" style="width: 100%;background-color:#5f9592" @click="register">注册</el-button>
             </el-form-item>
@@ -90,19 +90,19 @@ export default {
       confirmpass: [
         { validator: confirm, trigger: 'blur' },
       ],
-      email: [
-        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-      ],
+      //email: [
+      //   { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      //   { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+      // ],
       // code: [
       //   { required: true, message: '请输入验证码', trigger: 'blur' },
       // ]
     });
     const specialrule = ref({
-      email: [
-        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-      ]
+      // email: [
+      //   { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      //   { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+      // ]
     });
 
     const register = () => {
@@ -113,6 +113,7 @@ export default {
             if(res.code === '200') {
               //this.$message.success("注册成功")
               console.log("注册成功")
+              alert("注册成功");
             } else {
               //this.$message.error(res.msg)
               console.log(res.msg)

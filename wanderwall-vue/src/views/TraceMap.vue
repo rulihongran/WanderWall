@@ -121,18 +121,18 @@ export default {
       isTimeSelectActive: false,
       timeSelected: 0, // 默认选中第一个选项
       timeOptions: [
+        { label: 'All Time'},
         { label: 'The Past Month'},
-        { label: 'This Past Year'},
-        { label: 'All Time'}
+        { label: 'This Past Year'}
       ],
-
+      formObject: {time:'',location:''},
       mark_options:{locPoint:true,routeArrow:true,provinceName:false}//点 箭头 仪表盘是否显示
     };
   },
   mounted() {
     // Axios请求都在各个函数里面
-    drawChinaMap(this.dialogVisible,this.mark_options,this.enterProvince);
-    drawGauge();
+    drawChinaMap(this.dialogVisible,this.mark_options,this.enterProvince,this.formObject);
+    drawGauge(this.formObject);
 
 
     //检测筛选表格提交行为，手动提交给后端
@@ -164,23 +164,18 @@ export default {
       self.mark_options.locPoint = formObject['mark1'];
       self.mark_options.routeArrow = formObject['mark2'];
       self.mark_options.provinceName = formObject['mark3']
+
+      self.formObject.time = self.timeOptions[self.timeSelected].label;
+      self.formObject.location = formObject['location'];
+
       if (!self.enterProvince.value){
-        drawChinaMap(self.dialogVisible,self.mark_options);
+        drawChinaMap(self.dialogVisible,self.mark_options,self.enterProvince,self.formObject);
+        drawGauge(self.formObject);
       }else{
-        updateProvinceMap(self.mark_options);
+        updateProvinceMap(self.mark_options,self.formObject);
+        drawGauge(self.formObject);
       }
 
-      // 发送请求到后端
-      // axios.get(this.action, {
-      //   params: formObject
-      // })
-      //     .then(response => {
-      //       console.log(response.data); // 处理返回的数据
-      //       // 在这里更新页面上的内容
-      //     })
-      //     .catch(error => {
-      //       console.error('Error:', error);
-      //     });
     });
   },
   methods: {
@@ -192,7 +187,10 @@ export default {
     },
     backLink(){
       this.enterProvince.value = false;
-      drawChinaMap(this.dialogVisible,this.mark_options);
+      this.mark_options.pChinese='';
+      this.formObject.province='';
+      drawChinaMap(this.dialogVisible,this.mark_options,this.enterProvince,this.formObject);
+      drawGauge(this.formObject);
     },
 
     handlePost(){
