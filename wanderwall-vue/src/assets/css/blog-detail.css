@@ -1,0 +1,290 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+}
+
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+
+
+.main-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto 0;
+  margin-bottom: 30px;
+  background: #ffffff;
+  overflow: hidden auto;
+}
+
+.blog-detail-container {
+  position: relative;
+  width: 80%;
+  height: auto;
+  margin: 50px 0 0 10%;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.tag {
+  display: inline-flex;
+  justify-content: center; /* 水平居中对齐 */
+  position: relative;
+  width: auto; /* 根据内容自动调整宽度 */
+  height: 21px;
+  margin: 45% auto 0;
+  z-index: 4;
+  overflow: hidden;
+}
+.tag-text {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 15.6px;
+  top: 0;
+  left: calc(50% - 17.2px);
+  color: #ffffff;
+  font-family: Lato, var(--default-font-family);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.6px;
+  text-align: center;
+  white-space: nowrap;
+  margin-right: auto; /* 设置右边距为自动，使其在水平方向上居中对齐 */
+  margin-left: auto; /* 设置左边距为自动，使其在水平方向上居中对齐 */
+  z-index: 6;
+}
+.border {
+  position: relative;
+  width: 12px;
+  height: 52%;
+  top: 10%;
+  margin-left: 10px;
+  margin-right: 10px; /* 设置边框与相邻文字之间的固定距离 */
+  background: url(@/assets/blogimage/border.png)
+    no-repeat center;
+  background-size: cover;
+  z-index: 7;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: auto;
+  height: 47.25px;
+  margin: 6px auto 0;
+  color: #ffffff;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 47.25px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 15;
+}
+.cover {
+  position: absolute;
+  height: auto;
+  width: 100%;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-size: cover;
+  z-index: 2;
+}
+.blog-cover {
+  width: 100%;
+  height: auto; /* 确保图片宽度与容器相同，高度自动适应 */
+  object-fit: cover; /* 图片适应容器，保持宽高比 */
+}
+.shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(@/assets/blogimage/shadow.png)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 3;
+}
+.author-time {
+  display: flex;
+  width: 80%;
+  margin: 1% auto 3%;
+  color: #ffffff;
+}
+.author {
+  position: relative;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  width: auto;
+  height: 22px;
+  top: 80%;
+  left: 50%;
+  font-family: Lato, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 21.6px;
+  margin: 6px 5px 6px 0;
+  text-transform: capitalize;
+  white-space: nowrap;
+  transform: translate(-96.52%, 0);
+  z-index: 16;
+  color: #ffffff;
+}
+.time {
+  position: relative;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  width: auto;
+  height: 22px;
+  top: 80%;
+  left: 50%;
+  font-family: Lato, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 21.6px;
+  margin: 6px 0 6px 5px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  transform: translate(-96.52%, 0);
+  z-index: 16;
+  color: #ffffff;
+}
+.button{
+  margin: 10px auto 0;
+}
+.cascader
+{
+  margin-top: 10px;
+  margin-left: 10%;
+  width: 70%;
+}
+.black-button {
+  color:  #333;
+  background-color:#fff;
+  border-color: #fff;
+ 
+}
+.black-button:hover {
+  color: #fff;
+  background-color: #333;
+  border-color: #333;
+}
+
+.white-button:hover {
+  color:  #333;
+  background-color:#fff;
+  border-color: #fff;
+ 
+}
+.white-button {
+  color: #fff;
+  background-color: #333;
+  border-color: #333;
+}
+
+.aside-description {/*文本*/
+  position: relative;
+  height: auto;
+  width: 76%;
+  margin-top: 1%;
+  margin-left: 12%;
+  z-index: 19;
+  text-align: left;
+}
+.blog-text {
+  position: relative;
+  color: #313131;
+  font-family: Lato, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 36px;
+  text-align: left;
+}
+.text-title {
+  display: block;
+  position: relative;
+  height: 33.8px;
+  margin: 5px 0 0 0;
+  color: #313131;
+  font-family: Open Sans, var(--default-font-family);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 33.8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.picture {
+  position: relative;
+  display: flex;
+  justify-content: center; /* 水平居中对齐 */
+  align-items: center; /* 垂直居中对齐 */
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  margin-bottom:5px;
+  max-width: 600px;
+  max-height: 600px;
+  border-radius: 10px;
+}
+.picture-desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: auto;
+  height: auto;
+  margin: 10px auto 0;
+  margin-bottom: 10px;
+  color: #888888;
+  font-family: Lato, var(--default-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 62;
+}
+
+
+.input-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 6px auto 0;
+  background-color: transparent; 
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 47.25px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 15;
+}
+
