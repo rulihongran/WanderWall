@@ -1,0 +1,26 @@
+server:
+  ip: 127.0.0.1
+  port: 9090
+
+spring:
+  application:
+    name: springboot-minio
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/xie?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: TjsybSW213mmc,.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+files:
+  upload:
+    path: D:/home/files/
+
+
+#自定义配置
+minio:
+#  endpoint:  http://100.80.188.49:9000
+  endpoint:  http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket: user-bucket
