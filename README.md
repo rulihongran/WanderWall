@@ -35,7 +35,9 @@ mvn spring-boot:run
 
 1. Homepage
 
-   
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/home1.png" alt="Example Image" width="500">
+
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/home2.png" alt="Example Image" width="500">
 
 2. Trace Map
 
