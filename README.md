@@ -39,42 +39,42 @@ mvn spring-boot:run
 
 2. Trace Map
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/map1.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/map1.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/map2.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/map2.png" alt="Example Image" width="600">
 
 3. Travel Relation Map
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/graph.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/graph.png" alt="Example Image" width="600">
 
 4. Blog
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/blog1.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/blog1.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/blog2.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/blog2.png" alt="Example Image" width="600">
 
 5. Gallery
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/gallery.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/gallery.png" alt="Example Image" width="600">
 
 6. Annual Report
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report1.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report1.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report2.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report2.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report3.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/report3.png" alt="Example Image" width="600">
 
 7. Login/Signup
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/login.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/login.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/signup.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/signup.png" alt="Example Image" width="600">
 
 8. Personal Information
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/info1.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/info1.png" alt="Example Image" width="600">
 
-   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/info2.png" alt="Example Image" width="500">
+   <img src="https://github.com/rulihongran/WanderWall/blob/main/image/info2.png" alt="Example Image" width="600">
 
 Partial UI design references to the world travel guy.
